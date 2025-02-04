@@ -1,0 +1,66 @@
+schema: '2.0'
+stages:
+  import:
+    cmd: python src/data/import_raw_data.py
+    deps:
+    - path: src/data/check_structure.py
+      hash: md5
+      md5: fc48843ae973832ec0ded6b11e776864
+      size: 1166
+    - path: src/data/import_raw_data.py
+      hash: md5
+      md5: 3bbd5c1f2921221e3d60509edc68af6b
+      size: 1942
+    outs:
+    - path: data/raw/caracteristiques-2021.csv
+      hash: md5
+      md5: de851f3cfbd7d3c4b4cebc5c9c2d8e5d
+      size: 7055448
+    - path: data/raw/lieux-2021.csv
+      hash: md5
+      md5: 0e6fdb609b301a1d5190e821f3597444
+      size: 5773984
+    - path: data/raw/usagers-2021.csv
+      hash: md5
+      md5: 71e225f90cffbb7fea4a9a3d2264c814
+      size: 11856536
+    - path: data/raw/vehicules-2021.csv
+      hash: md5
+      md5: 5aa80e5b0a33a1fe8a55b00dc25f74dd
+      size: 6396946
+  preprocess:
+    cmd: python src/data/make_dataset.py
+    deps:
+    - path: data/raw/caracteristiques-2021.csv
+      hash: md5
+      md5: de851f3cfbd7d3c4b4cebc5c9c2d8e5d
+      size: 7055448
+    - path: data/raw/lieux-2021.csv
+      hash: md5
+      md5: 0e6fdb609b301a1d5190e821f3597444
+      size: 5773984
+    - path: data/raw/usagers-2021.csv
+      hash: md5
+      md5: 71e225f90cffbb7fea4a9a3d2264c814
+      size: 11856536
+    - path: data/raw/vehicules-2021.csv
+      hash: md5
+      md5: 5aa80e5b0a33a1fe8a55b00dc25f74dd
+      size: 6396946
+    outs:
+    - path: data/preprocessed/X_test.csv
+      hash: md5
+      md5: 08ec643f689d5be8dd91206e75188d4c
+      size: 1747890
+    - path: data/preprocessed/X_train.csv
+      hash: md5
+      md5: 91495cf14772dcdd1e100cfe612edaa1
+      size: 4079716
+    - path: data/preprocessed/y_test.csv
+      hash: md5
+      md5: 12ed905481ea83626b902d2f55f6cd6f
+      size: 49236
+    - path: data/preprocessed/y_train.csv
+      hash: md5
+      md5: f149204136ae482970fe0577b3d97432
+      size: 114873
