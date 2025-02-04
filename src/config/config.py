@@ -8,7 +8,7 @@ class Config:
 
     NEW_DATA_FILE = 'data/new_data/new_data.csv'    # contains fresh new data
     OUTPUT_TRAINED_MODEL_FILE_RF = 'models/model_best_rf'    # Trained random forest classifer model file. We will skip joblib extension
-    OUTPUT_TRAINED_MODEL_FILE_RF_DISCARDED = 'models/discarded/model_best_lr'    # Trained Logistic Regression model file which has not a good accuracy. We will skip joblib extension
+    OUTPUT_TRAINED_MODEL_FILE_RF_DISCARDED = 'models/discarded/model_best_rf'    # Trained random forest classifer file which has not a good accuracy. We will skip joblib extension
     OUTPUT_PREDICTIONS_RESULTS_FILE = 'data/predictions/predictions.csv'  # Prediction results
 
     BUCKET_FOLDER_URL = "https://mlops-project-db.s3.eu-west-1.amazonaws.com/accidents/"
