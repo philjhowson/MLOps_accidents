@@ -64,3 +64,32 @@ stages:
       hash: md5
       md5: f149204136ae482970fe0577b3d97432
       size: 114873
+  train_rfc:
+    cmd: python src/models/train_random_forests.py --version 1
+    deps:
+    - path: data/preprocessed/X_test.csv
+      hash: md5
+      md5: 08ec643f689d5be8dd91206e75188d4c
+      size: 1747890
+    - path: data/preprocessed/X_train.csv
+      hash: md5
+      md5: 91495cf14772dcdd1e100cfe612edaa1
+      size: 4079716
+    - path: data/preprocessed/y_test.csv
+      hash: md5
+      md5: 12ed905481ea83626b902d2f55f6cd6f
+      size: 49236
+    - path: data/preprocessed/y_train.csv
+      hash: md5
+      md5: f149204136ae482970fe0577b3d97432
+      size: 114873
+    outs:
+    - path: metrics/RandomForests_v1_scores.json
+      hash: md5
+      md5: 1a18eef6e8a017d48d6250235e713aa0
+      size: 72
+    - path: mlruns/RandomForests_v1/
+      hash: md5
+      md5: 3793429ccd058b3fede97228a76939be.dir
+      size: 160002570
+      nfiles: 1591
