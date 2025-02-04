@@ -2,6 +2,7 @@ import requests
 import os
 import logging
 from check_structure import check_existing_file, check_existing_folder
+from src.config.config import Config
 
 
 def import_raw_data(raw_data_relative_path, 
@@ -27,16 +28,17 @@ def import_raw_data(raw_data_relative_path,
             else:
                 print(f'Error accessing the object {input_file}:', response.status_code)
                 
-def main(raw_data_relative_path="./data/raw", 
+def main(raw_data_relative_path=Config.RAW_DATA_DIR, 
         filenames = ["caracteristiques-2021.csv", "lieux-2021.csv", "usagers-2021.csv", 
                     "vehicules-2021.csv"],
-        bucket_folder_url= "https://mlops-project-db.s3.eu-west-1.amazonaws.com/accidents/"          
+        bucket_folder_url= Config.BUCKET_FOLDER_URL         
         ):
     """ Upload data from AWS s3 in ./data/raw
     """
     import_raw_data(raw_data_relative_path, filenames, bucket_folder_url)
     logger = logging.getLogger(__name__)
     logger.info('making raw data set')
+    logger.info('--------------------------')
 
 
 if __name__ == '__main__':
