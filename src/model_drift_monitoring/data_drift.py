@@ -103,7 +103,9 @@ def main():
         json.dump(report_data, f, indent=4)
 
     # save HTML
-    data_drift_dataset_report.save_html(f"{output_file_path}Classification Report.html")
+    save_filename = f"{output_file_path}templates/Classification Report.html"
+    os.makedirs(os.path.dirname(save_filename), exist_ok=True)
+    data_drift_dataset_report.save_html(save_filename)
 
     # in a notebook run :
     # data_drift_dataset_report.show()
