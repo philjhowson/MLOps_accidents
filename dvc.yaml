@@ -16,6 +16,7 @@ stages:
       - data/raw/lieux-2021.csv
       - data/raw/usagers-2021.csv
       - data/raw/vehicules-2021.csv
+      - src/data/make_dataset.py
     outs:
       - data/preprocessed/X_test.csv
       - data/preprocessed/X_train.csv
@@ -28,6 +29,7 @@ stages:
       - data/preprocessed/X_train.csv
       - data/preprocessed/y_test.csv
       - data/preprocessed/y_train.csv
+      - src/models/train_random_forests.py
     outs:
       - mlruns/RandomForests/
     metrics:
