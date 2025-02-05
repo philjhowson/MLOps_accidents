@@ -21,13 +21,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install dvc
-
-      - name: Install Ruff
-        run: pip install ruff
+          pip install dvc-s3
+          pip install ruff
 
       - name: Run DVC Repro to Pull Data
         run: |
-          dvc pull
+          dvc pull -r origin
           dvc repro
 
       - name: Run Ruff
