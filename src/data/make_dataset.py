@@ -9,8 +9,8 @@ from check_structure import check_existing_file, check_existing_folder
 import os
 
 @click.command()
-@click.argument('input_filepath', type=click.Path(exists=False), required=0)
-@click.argument('output_filepath', type=click.Path(exists=False), required=0)
+@click.argument('input_filepath', type = click.Path(exists = False), required = 0)
+@click.argument('output_filepath', type = click.Path(exists = False), required = 0)
 
 def main(input_filepath, output_filepath):
     """ Runs data processing scripts to turn raw data from (../raw) into
@@ -20,7 +20,7 @@ def main(input_filepath, output_filepath):
     logger.info('making final data set from raw data')
 
     # Prompt the user for input file paths
-    input_filepath= click.prompt('Enter the file path for the input data', type=click.Path(exists=True))
+    input_filepath= click.prompt('Enter the file path for the input data', type = click.Path(exists=True))
     input_filepath_users = os.path.join(input_filepath, "usagers-2021.csv")
     input_filepath_caract = os.path.join(input_filepath, "caracteristiques-2021.csv")
     input_filepath_places = os.path.join(input_filepath, "lieux-2021.csv")
@@ -33,8 +33,8 @@ def main(input_filepath, output_filepath):
 def process_data(input_filepath_users, input_filepath_caract, input_filepath_places, input_filepath_veh, output_folderpath):
  
     #--Importing dataset
-    df_users = pd.read_csv(input_filepath_users, sep=";")
-    df_caract = pd.read_csv(input_filepath_caract, sep=";", header=0, low_memory=False)
+    df_users = pd.read_csv(input_filepath_users, sep = ";")
+    df_caract = pd.read_csv(input_filepath_caract, sep = ";", header = 0, low_memory = False)
     df_places = pd.read_csv(input_filepath_places, sep = ";", encoding='utf-8')
     df_veh = pd.read_csv(input_filepath_veh, sep=";")
 
