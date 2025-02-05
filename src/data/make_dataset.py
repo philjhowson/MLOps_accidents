@@ -119,6 +119,10 @@ def process_data(input_filepath_users, input_filepath_caract, input_filepath_pla
     X_train[col_to_fill_na] = X_train[col_to_fill_na].fillna(X_train[col_to_fill_na].mode().iloc[0])
     X_test[col_to_fill_na] = X_test[col_to_fill_na].fillna(X_train[col_to_fill_na].mode().iloc[0])
 
+    # drop id_usager from train and test set
+    X_train.drop(['id_usager'], axis=1, inplace=True)
+    X_test.drop(['id_usager'], axis=1, inplace=True)
+
     # Create folder if necessary 
     if check_existing_folder(output_folderpath) :
         os.makedirs(output_folderpath)
