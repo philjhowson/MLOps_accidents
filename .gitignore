@@ -5,11 +5,18 @@ __pycache__/
 # C extensions
 *.so
 
+#exclude folders for dagshub
+
+models/
+data/
+mlruns/
+metrics/
+
 # Distribution / packaging
 .Python
 env/
 myenv/
-my_env/
+MLOPs_env/
 venv/
 build/
 develop-eggs/
