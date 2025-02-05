@@ -12,6 +12,11 @@ data/
 mlruns/
 metrics/
 
+#include subfolders with the same name
+
+!src/models/
+!src/data
+
 # Distribution / packaging
 .Python
 env/
