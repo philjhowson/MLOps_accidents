@@ -5,8 +5,8 @@ stages:
     deps:
     - path: src/data/check_structure.py
       hash: md5
-      md5: fc48843ae973832ec0ded6b11e776864
-      size: 1166
+      md5: d816d2532e240a43e703601fe2787b13
+      size: 1162
     - path: src/data/import_raw_data.py
       hash: md5
       md5: 3bbd5c1f2921221e3d60509edc68af6b
@@ -47,6 +47,10 @@ stages:
       hash: md5
       md5: 5aa80e5b0a33a1fe8a55b00dc25f74dd
       size: 6396946
+    - path: src/data/make_dataset.py
+      hash: md5
+      md5: 2f3bce4b38ab664cc4e1db24e908af66
+      size: 6875
     outs:
     - path: data/preprocessed/X_test.csv
       hash: md5
@@ -83,13 +87,17 @@ stages:
       hash: md5
       md5: f149204136ae482970fe0577b3d97432
       size: 114873
+    - path: src/models/train_random_forests.py
+      hash: md5
+      md5: 5476d292f66c681919cce3e3ee845e4a
+      size: 2763
     outs:
     - path: metrics/RandomForests_scores.json
       hash: md5
-      md5: d6d0d9df8bc518dc6dac00b81b020473
+      md5: b4a7e97e8f363a970dc1c4ccaade3542
       size: 72
     - path: mlruns/RandomForests/
       hash: md5
-      md5: 3a0ccc23bf96f3b3a6c0eaa39b1aabc5.dir
-      size: 78613976
+      md5: 5364c11786d85caebee8865b3c068bfc.dir
+      size: 111392876
       nfiles: 1591
