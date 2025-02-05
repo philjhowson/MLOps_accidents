@@ -54,7 +54,7 @@ def process_data(input_filepath_users, input_filepath_caract, input_filepath_pla
     #--Replacing names 
     df_users.grav.replace([1,2,3,4], [1,3,4,2], inplace = True)
     df_caract.rename({"agg" : "agg_"},  inplace = True, axis = 1)
-    corse_replace = {"2A":"201", "2B":"202"}
+    #corse_replace = {"2A":"201", "2B":"202"}
     df_caract["dep"] = df_caract["dep"].str.replace("2A", "201")
     df_caract["dep"] = df_caract["dep"].str.replace("2B", "202")
     df_caract["com"] = df_caract["com"].str.replace("2A", "201")
