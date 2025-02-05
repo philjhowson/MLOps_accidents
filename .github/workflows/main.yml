@@ -25,6 +25,11 @@ jobs:
       - name: Install Ruff
         run: pip install ruff
 
+      - name: Run DVC Repro to Pull Data
+        run: |
+          dvc pull
+          dvc repro
+
       - name: Run Ruff
         run: ruff check . --fix
 
