@@ -22,13 +22,13 @@ stages:
       - data/preprocessed/y_test.csv
       - data/preprocessed/y_train.csv
   train_rfc:
-    cmd: python src/models/train_random_forests.py --version 1
+    cmd: python src/models/train_random_forests.py
     deps:
       - data/preprocessed/X_test.csv
       - data/preprocessed/X_train.csv
       - data/preprocessed/y_test.csv
       - data/preprocessed/y_train.csv
     outs:
-      - mlruns/RandomForests_v1/
+      - mlruns/RandomForests/
     metrics:
-      - metrics/RandomForests_v1_scores.json
+      - metrics/RandomForests_scores.json
