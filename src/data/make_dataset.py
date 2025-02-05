@@ -2,17 +2,12 @@
 import pandas as pd
 import numpy as np
 from pathlib import Path
-import click
 import logging
 from sklearn.model_selection import train_test_split
 from check_structure import check_existing_file, check_existing_folder
 import os
 
-@click.command()
-@click.argument('input_filepath', type = click.Path(exists = False), required = 0)
-@click.argument('output_filepath', type = click.Path(exists = False), required = 0)
-
-def main(input_filepath, output_filepath):
+def main():
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../preprocessed).
     """
@@ -20,12 +15,12 @@ def main(input_filepath, output_filepath):
     logger.info('making final data set from raw data')
 
     # Prompt the user for input file paths
-    input_filepath= click.prompt('Enter the file path for the input data', type = click.Path(exists=True))
+    input_filepath = 'data/raw/'
     input_filepath_users = os.path.join(input_filepath, "usagers-2021.csv")
     input_filepath_caract = os.path.join(input_filepath, "caracteristiques-2021.csv")
     input_filepath_places = os.path.join(input_filepath, "lieux-2021.csv")
     input_filepath_veh = os.path.join(input_filepath, "vehicules-2021.csv")
-    output_filepath = click.prompt('Enter the file path for the output preprocessed data (e.g., output/preprocessed_data.csv)', type=click.Path())
+    output_filepath = 'data/preprocessed'
     
     # Call the main data processing function with the provided file paths
     process_data(input_filepath_users, input_filepath_caract, input_filepath_places, input_filepath_veh, output_filepath)
