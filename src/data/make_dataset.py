@@ -15,12 +15,12 @@ def main():
     logger.info('making final data set from raw data')
 
     # Prompt the user for input file paths
-    input_filepath = 'data/raw/'
-    input_filepath_users = os.path.join(input_filepath, "usagers-2021.csv")
-    input_filepath_caract = os.path.join(input_filepath, "caracteristiques-2021.csv")
-    input_filepath_places = os.path.join(input_filepath, "lieux-2021.csv")
-    input_filepath_veh = os.path.join(input_filepath, "vehicules-2021.csv")
-    output_filepath = 'data/preprocessed'
+    input_filepath= click.prompt('Enter the file path for the input data', type=click.Path(exists=True))
+    input_filepath_users = os.path.join(input_filepath, "usagers-2023.csv")
+    input_filepath_caract = os.path.join(input_filepath, "caracteristiques-2023.csv")
+    input_filepath_places = os.path.join(input_filepath, "lieux-2023.csv")
+    input_filepath_veh = os.path.join(input_filepath, "vehicules-2023.csv")
+    output_filepath = click.prompt('Enter the file path for the output preprocessed data (e.g., output/preprocessed_data.csv)', type=click.Path())
     
     # Call the main data processing function with the provided file paths
     process_data(input_filepath_users, input_filepath_caract, input_filepath_places, input_filepath_veh, output_filepath)
@@ -113,6 +113,10 @@ def process_data(input_filepath_users, input_filepath_caract, input_filepath_pla
     col_to_fill_na = ["surf", "circ", "col", "motor"]
     X_train[col_to_fill_na] = X_train[col_to_fill_na].fillna(X_train[col_to_fill_na].mode().iloc[0])
     X_test[col_to_fill_na] = X_test[col_to_fill_na].fillna(X_train[col_to_fill_na].mode().iloc[0])
+
+    # drop id_usager from train and test set
+    X_train.drop(['id_usager'], axis=1, inplace=True)
+    X_test.drop(['id_usager'], axis=1, inplace=True)
 
     # Create folder if necessary 
     if check_existing_folder(output_folderpath) :
