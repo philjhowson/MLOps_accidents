@@ -15,12 +15,12 @@ def main():
     logger.info('making final data set from raw data')
 
     # Prompt the user for input file paths
-    input_filepath= click.prompt('Enter the file path for the input data', type=click.Path(exists=True))
+    input_filepath = 'data/raw/'
     input_filepath_users = os.path.join(input_filepath, "usagers-2023.csv")
     input_filepath_caract = os.path.join(input_filepath, "caracteristiques-2023.csv")
     input_filepath_places = os.path.join(input_filepath, "lieux-2023.csv")
     input_filepath_veh = os.path.join(input_filepath, "vehicules-2023.csv")
-    output_filepath = click.prompt('Enter the file path for the output preprocessed data (e.g., output/preprocessed_data.csv)', type=click.Path())
+    output_filepath = 'data/preprocessed/'
     
     # Call the main data processing function with the provided file paths
     process_data(input_filepath_users, input_filepath_caract, input_filepath_places, input_filepath_veh, output_filepath)
