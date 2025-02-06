@@ -37,7 +37,7 @@ def train_rfc():
 
     current_dir = os.getcwd()
     tracking_dir = os.path.join(current_dir, f"mlruns/RandomForests")
-    client = MlflowClient(tracking_uri=f'file:///{os.path.abspath(tracking_dir)}')
+    MlflowClient(tracking_uri = f'file:///{os.path.abspath(tracking_dir)}')
     
     mlflow.set_experiment("RandomForests")
 
