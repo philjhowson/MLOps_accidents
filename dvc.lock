@@ -89,19 +89,19 @@ stages:
       size: 135918
     - path: src/models/train_random_forests.py
       hash: md5
-      md5: b774a6e3367608f734f65bd5e436f05a
-      size: 2796
+      md5: c9fa7af11fae21ceeced4d2e9299e993
+      size: 2805
     outs:
     - path: metrics/RandomForests_scores.json
       hash: md5
-      md5: 2d83e4749029c70f7af747715c9a36b0
+      md5: 1481df94f938bfaef9b9d35f4da5c986
       size: 72
     - path: mlruns/RandomForests/
       hash: md5
-      md5: 6425f2e3cb1412f67ca0560c2dcf4bf9.dir
+      md5: 66bb9c5ac192ffbe7f096c9eb611d5e3.dir
       size: 208
       nfiles: 1
     - path: models/best_random_forests.joblib
       hash: md5
-      md5: 7161c23ff2dfc1ddf749bf0d88501a4b
-      size: 182096457
+      md5: ed7ad311fb671cb77abf5eae0e5853d8
+      size: 242650857
