@@ -32,5 +32,6 @@ stages:
       - src/models/train_random_forests.py
     outs:
       - mlruns/RandomForests/
+      - models/best_random_forests.joblib
     metrics:
       - metrics/RandomForests_scores.json
