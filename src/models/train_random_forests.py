@@ -1,5 +1,6 @@
 import argparse
 import mlflow
+from mlflow import MlflowClient
 from mlflow.models.signature import infer_signature
 import sklearn
 import os
@@ -23,7 +24,6 @@ def train_rfc():
     y_test = np.ravel(y_test)
 
     #set parameters
-
     params = {'n_estimators' : [50, 100, 150, 200],
               'max_depth' : [5, 10, 15, None],
               'min_samples_split' : [2, 5, 10],
@@ -31,14 +31,13 @@ def train_rfc():
               }
 
     #initialize mlflow
-
     rf_classifier = ensemble.RandomForestClassifier(n_jobs = -1)
     grid_search = GridSearchCV(rf_classifier, params, cv = 3, scoring = 'f1')
     grid_search.fit(X_train, y_train)
 
     current_dir = os.getcwd()
     tracking_dir = os.path.join(current_dir, f"mlruns/RandomForests")
-    mlflow.set_tracking_uri(f'file:///{os.path.abspath(tracking_dir)}')
+    client = MlflowClient(tracking_uri=f'file:///{os.path.abspath(tracking_dir)}')
     
     mlflow.set_experiment("RandomForests")
 

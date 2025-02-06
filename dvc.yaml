@@ -5,17 +5,17 @@ stages:
       - src/data/import_raw_data.py
       - src/data/check_structure.py
     outs:
-      - data/raw/caracteristiques-2021.csv
-      - data/raw/lieux-2021.csv
-      - data/raw/usagers-2021.csv
-      - data/raw/vehicules-2021.csv
+      - data/raw/caracteristiques-2023.csv
+      - data/raw/lieux-2023.csv
+      - data/raw/usagers-2023.csv
+      - data/raw/vehicules-2023.csv
   preprocess:
     cmd: python src/data/make_dataset.py
     deps:
-      - data/raw/caracteristiques-2021.csv
-      - data/raw/lieux-2021.csv
-      - data/raw/usagers-2021.csv
-      - data/raw/vehicules-2021.csv
+      - data/raw/caracteristiques-2023.csv
+      - data/raw/lieux-2023.csv
+      - data/raw/usagers-2023.csv
+      - data/raw/vehicules-2023.csv
       - src/data/make_dataset.py
     outs:
       - data/preprocessed/X_test.csv

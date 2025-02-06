@@ -9,99 +9,99 @@ stages:
       size: 815
     - path: src/data/import_raw_data.py
       hash: md5
-      md5: 3bbd5c1f2921221e3d60509edc68af6b
-      size: 1942
+      md5: 8a03edfc17cc0b605014dbf33447f111
+      size: 2169
     outs:
-    - path: data/raw/caracteristiques-2021.csv
+    - path: data/raw/caracteristiques-2023.csv
       hash: md5
-      md5: de851f3cfbd7d3c4b4cebc5c9c2d8e5d
-      size: 7055448
-    - path: data/raw/lieux-2021.csv
+      md5: e35bf80bbc0fde85854b8b070744ea3c
+      size: 6604415
+    - path: data/raw/lieux-2023.csv
       hash: md5
-      md5: 0e6fdb609b301a1d5190e821f3597444
-      size: 5773984
-    - path: data/raw/usagers-2021.csv
+      md5: 4f3d5512c25ff1a130142ae9e7596fe2
+      size: 7179735
+    - path: data/raw/usagers-2023.csv
       hash: md5
-      md5: 71e225f90cffbb7fea4a9a3d2264c814
-      size: 11856536
-    - path: data/raw/vehicules-2021.csv
+      md5: 4f93ff7e35e8e683c35be32808670633
+      size: 14944539
+    - path: data/raw/vehicules-2023.csv
       hash: md5
-      md5: 5aa80e5b0a33a1fe8a55b00dc25f74dd
-      size: 6396946
+      md5: b830347a02c375a665320dd77315760a
+      size: 6806168
   preprocess:
     cmd: python src/data/make_dataset.py
     deps:
-    - path: data/raw/caracteristiques-2021.csv
+    - path: data/raw/caracteristiques-2023.csv
       hash: md5
-      md5: de851f3cfbd7d3c4b4cebc5c9c2d8e5d
-      size: 7055448
-    - path: data/raw/lieux-2021.csv
+      md5: e35bf80bbc0fde85854b8b070744ea3c
+      size: 6604415
+    - path: data/raw/lieux-2023.csv
       hash: md5
-      md5: 0e6fdb609b301a1d5190e821f3597444
-      size: 5773984
-    - path: data/raw/usagers-2021.csv
+      md5: 4f3d5512c25ff1a130142ae9e7596fe2
+      size: 7179735
+    - path: data/raw/usagers-2023.csv
       hash: md5
-      md5: 71e225f90cffbb7fea4a9a3d2264c814
-      size: 11856536
-    - path: data/raw/vehicules-2021.csv
+      md5: 4f93ff7e35e8e683c35be32808670633
+      size: 14944539
+    - path: data/raw/vehicules-2023.csv
       hash: md5
-      md5: 5aa80e5b0a33a1fe8a55b00dc25f74dd
-      size: 6396946
+      md5: b830347a02c375a665320dd77315760a
+      size: 6806168
     - path: src/data/make_dataset.py
       hash: md5
-      md5: 7f1084b66b54c5a24a1b989b28f3dd42
-      size: 6462
+      md5: 6ffbb09b64b05da02a8a06085ad5f8e9
+      size: 6622
     outs:
     - path: data/preprocessed/X_test.csv
       hash: md5
-      md5: 08ec643f689d5be8dd91206e75188d4c
-      size: 1747890
+      md5: dc6728eae3f3b6a8bf38b7d8a1d160f4
+      size: 2053952
     - path: data/preprocessed/X_train.csv
       hash: md5
-      md5: 91495cf14772dcdd1e100cfe612edaa1
-      size: 4079716
+      md5: 4faa79eb522ef4e17a4a894636b26d56
+      size: 4793699
     - path: data/preprocessed/y_test.csv
       hash: md5
-      md5: 12ed905481ea83626b902d2f55f6cd6f
-      size: 49236
+      md5: 8152be065c3c96dd89e740026b29b6e5
+      size: 58254
     - path: data/preprocessed/y_train.csv
       hash: md5
-      md5: f149204136ae482970fe0577b3d97432
-      size: 114873
+      md5: 56ba69f47d55c5b5045499654d43ba7d
+      size: 135918
   train_rfc:
     cmd: python src/models/train_random_forests.py
     deps:
     - path: data/preprocessed/X_test.csv
       hash: md5
-      md5: 08ec643f689d5be8dd91206e75188d4c
-      size: 1747890
+      md5: dc6728eae3f3b6a8bf38b7d8a1d160f4
+      size: 2053952
     - path: data/preprocessed/X_train.csv
       hash: md5
-      md5: 91495cf14772dcdd1e100cfe612edaa1
-      size: 4079716
+      md5: 4faa79eb522ef4e17a4a894636b26d56
+      size: 4793699
     - path: data/preprocessed/y_test.csv
       hash: md5
-      md5: 12ed905481ea83626b902d2f55f6cd6f
-      size: 49236
+      md5: 8152be065c3c96dd89e740026b29b6e5
+      size: 58254
     - path: data/preprocessed/y_train.csv
       hash: md5
-      md5: f149204136ae482970fe0577b3d97432
-      size: 114873
+      md5: 56ba69f47d55c5b5045499654d43ba7d
+      size: 135918
     - path: src/models/train_random_forests.py
       hash: md5
-      md5: 5476d292f66c681919cce3e3ee845e4a
-      size: 2763
+      md5: 20a1fbba655e98b1a22593de130e582f
+      size: 2803
     outs:
     - path: metrics/RandomForests_scores.json
       hash: md5
-      md5: 56facca8de69a8ab6f9156819d25152b
+      md5: ed5c8f36d1ebf153ded9078c31411e44
       size: 72
     - path: mlruns/RandomForests/
       hash: md5
-      md5: 001c461c6f7bc8dd6d97fb4a3e010208.dir
-      size: 160213615
-      nfiles: 1591
+      md5: efd427375018df7bacd1cb5d254daddf.dir
+      size: 208
+      nfiles: 1
     - path: models/best_random_forests.joblib
       hash: md5
-      md5: 9f25b0ffdbf86673addd3a102bb55c5c
-      size: 160134537
+      md5: e35e5c18243ea412e552b820c54a4c80
+      size: 242762057
