@@ -22,7 +22,9 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Unit Tests with pytest
-        run: pytest tests/
+        run: |
+	  pytest tests/tests_import_raw_data.py
+          pytest tests/tests_preprocessing.py
 
       - name: Run Ruff
         run: ruff check . --fix
