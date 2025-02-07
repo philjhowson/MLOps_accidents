@@ -21,19 +21,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Set up DVC
-        run: |
-          dvc remote add origin -f s3://dvc
-          dvc remote modify origin endpointurl https://dagshub.com/philjhowson/MLOps_accidents.s3 
-
-      - name: Set up DVC credentials
-        run: |
-          dvc remote modify origin --local access_key_id ${{ secrets.PHILJHOWSON_DVC_KEY_ID }}" >> $GITHUB_ENV
-          dvc remote modify origin --local secret_access_key ${{ secrets.PHILJHOWSON_DVC_ACCESS_KEY }}" >> $GITHUB_ENV0
-
-      - name: Pull data from DVC
-        run: dvc pull data/
-
       - name: Run Unit Tests with pytest
         run: pytest tests/
         

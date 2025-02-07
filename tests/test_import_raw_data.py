@@ -10,10 +10,10 @@ def test_import_data():
 
     main()
 
-    file1 = 'data/raw/caracteristiques-2021.csv'
-    file2 = 'data/raw/lieux-2021.csv'
-    file3 = 'data/raw/usagers-2021.csv'
-    file4 = 'data/raw/vehicules-2021.csv'
+    file1 = 'data/raw/caracteristiques-2023.csv'
+    file2 = 'data/raw/lieux-2023.csv'
+    file3 = 'data/raw/usagers-2023.csv'
+    file4 = 'data/raw/vehicules-2023.csv'
 
     assert os.path.exists(file1), f"File @ {file1} not found!"
     assert os.path.exists(file2), f"File @ {file2} not found!"
