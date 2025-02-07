@@ -13,3 +13,4 @@ src.egg-info/
 tests/
 .ruff_cache
 .pytest_cache
+.trash/
