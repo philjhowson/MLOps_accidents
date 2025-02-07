@@ -23,7 +23,7 @@ jobs:
 
       - name: Set up DVC
         run: |
-          dvc remote add origin s3://dvc
+          dvc remote add origin -f s3://dvc
           dvc remote modify origin endpointurl https://dagshub.com/philjhowson/MLOps_accidents.s3 
 
       - name: Set up DVC credentials
