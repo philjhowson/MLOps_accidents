@@ -1,0 +1,15 @@
+artifact_uri: file:///home/ubuntu/mlops_project/MLOps_accidents/mlruns/238748994201613462/42cc80abfd6c47b39aa43eda407a3e1f/artifacts
+end_time: 1738708271748
+entry_point_name: ''
+experiment_id: '238748994201613462'
+lifecycle_stage: active
+run_id: 42cc80abfd6c47b39aa43eda407a3e1f
+run_name: model_best_rf-v1-20250204
+run_uuid: 42cc80abfd6c47b39aa43eda407a3e1f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1738708268244
+status: 3
+tags: []
+user_id: ubuntu
