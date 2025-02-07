@@ -15,4 +15,3 @@ tests/
 .pytest_cache
 .trash/
 __pycache__/
-
