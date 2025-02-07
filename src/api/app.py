@@ -5,8 +5,8 @@ from pydantic import BaseModel
 import pandas as pd
 
 # Define model path and load it
-#MODEL_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "models", "best_random_forests.joblib"))
-MODEL_PATH = 'best_random_forests.joblib'
+MODEL_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "models", "best_random_forests.joblib"))
+#MODEL_PATH = 'best_random_forests.joblib'
 model = joblib.load(MODEL_PATH)
 
 class AccidentData(BaseModel):
@@ -94,6 +94,5 @@ app = FastAPI()
 @app.get("/predict/", summary="Predict the severity of an accident")
 def predict_seriousness_accident(features: AccidentData) -> Prediction:
     features = pd.DataFrame.from_dict(features.dict(), orient='index').T
-    print(features)
     prediction = model.predict(features)
-    return {"prediction": list(prediction)[0]}
+    return {'grav': int(list(prediction)[0])}
