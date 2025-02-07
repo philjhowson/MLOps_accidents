@@ -7,7 +7,6 @@ from sklearn.model_selection import train_test_split
 from check_structure import check_existing_file, check_existing_folder
 import os
 
-
 def main():
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../preprocessed).
@@ -16,7 +15,7 @@ def main():
     logger.info('making final data set from raw data')
 
     # Prompt the user for input file paths
-    input_filepath= 'data/raw/'
+    input_filepath = 'data/raw/'
     input_filepath_users = os.path.join(input_filepath, "usagers-2021.csv")
     input_filepath_caract = os.path.join(input_filepath, "caracteristiques-2021.csv")
     input_filepath_places = os.path.join(input_filepath, "lieux-2021.csv")
@@ -29,9 +28,9 @@ def main():
 def process_data(input_filepath_users, input_filepath_caract, input_filepath_places, input_filepath_veh, output_folderpath):
  
     #--Importing dataset
-    df_users = pd.read_csv(input_filepath_users, sep=";")
-    df_caract = pd.read_csv(input_filepath_caract, sep=";", header=0, low_memory=False)
-    df_places = pd.read_csv(input_filepath_places, sep = ";", encoding='utf-8')
+    df_users = pd.read_csv(input_filepath_users, sep = ";")
+    df_caract = pd.read_csv(input_filepath_caract, sep = ";", header = 0, low_memory = False)
+    df_places = pd.read_csv(input_filepath_places, sep = ";", encoding='utf-8', low_memory = False)
     df_veh = pd.read_csv(input_filepath_veh, sep=";")
 
 
@@ -48,9 +47,9 @@ def process_data(input_filepath_users, input_filepath_caract, input_filepath_pla
     df_users.drop(['an_nais'], inplace=True, axis=1)
 
     #--Replacing names 
-    df_users.grav = df_users.grav.replace([1,2,3,4], [1,3,4,2])
+    df_users['grav'] = df_users.grav.replace([1,2,3,4], [1,3,4,2])
     df_caract.rename({"agg" : "agg_"},  inplace = True, axis = 1)
-    corse_replace = {"2A":"201", "2B":"202"}
+    #corse_replace = {"2A":"201", "2B":"202"}
     df_caract["dep"] = df_caract["dep"].str.replace("2A", "201")
     df_caract["dep"] = df_caract["dep"].str.replace("2B", "202")
     df_caract["com"] = df_caract["com"].str.replace("2A", "201")
@@ -88,7 +87,6 @@ def process_data(input_filepath_users, input_filepath_caract, input_filepath_pla
     #--Modification of the target variable  : 1 : prioritary // 0 : non-prioritary
     df['grav'] = df['grav'].replace([2,3,4], [0,1,1])
 
-
     #--Replacing values -1 and 0 
     col_to_replace0_na = [ "trajet", "catv", "motor"]
     col_to_replace1_na = [ "trajet", "secu1", "catv", "obsm", "motor", "circ", "surf", "situ", "vma", "atm", "col"]
@@ -114,6 +112,10 @@ def process_data(input_filepath_users, input_filepath_caract, input_filepath_pla
     col_to_fill_na = ["surf", "circ", "col", "motor"]
     X_train[col_to_fill_na] = X_train[col_to_fill_na].fillna(X_train[col_to_fill_na].mode().iloc[0])
     X_test[col_to_fill_na] = X_test[col_to_fill_na].fillna(X_train[col_to_fill_na].mode().iloc[0])
+
+    # drop id_usager from train and test set
+    X_train.drop(['id_usager'], axis=1, inplace=True)
+    X_test.drop(['id_usager'], axis=1, inplace=True)
 
     # Create folder if necessary 
     if check_existing_folder(output_folderpath) :
