@@ -52,7 +52,7 @@ def train_rfc():
     best_model = grid_search.best_estimator_
     best_F1 = grid_search.cv_results_['mean_test_score'][best_index]
 
-    with mlflow.start_run(run_name='RandomForests') as run:
+    with mlflow.start_run(run_name='RandomForests'):
         param_grid_json = json.dumps(grid_search.param_grid, indent=2)
         mlflow.log_param('param_grid', param_grid_json)
         mlflow.set_tag('param_grid_full', param_grid_json)
