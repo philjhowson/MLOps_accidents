@@ -5,8 +5,8 @@ from pydantic import BaseModel
 import pandas as pd
 
 # Define model path and load it
-MODEL_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "models", "best_random_forests.joblib"))
-#MODEL_PATH = 'best_random_forests.joblib'
+#MODEL_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "models", "best_random_forests.joblib"))
+MODEL_PATH = 'best_random_forests.joblib'
 model = joblib.load(MODEL_PATH)
 
 class AccidentData(BaseModel):
