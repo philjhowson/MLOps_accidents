@@ -20,3 +20,4 @@ dvc
 dvc-s3
 ruff
 mlflow
+pytest
