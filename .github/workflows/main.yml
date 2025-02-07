@@ -23,7 +23,7 @@ jobs:
 
       - name: Run Unit Tests with pytest
         run: pytest tests/
-	working-directory: /home/runner/work/MLOps_accidents
+        working-directory: /home/runner/work/MLOps_accidents
 
       - name: Run Ruff
         run: ruff check . --fix
