@@ -215,12 +215,12 @@ async def authorize_user(
 @app.get("/")
 async def root():
     """
-    Welcome endpoint of the NBA prediction API.
+    Welcome endpoint of the accidents prediction API.
 
     Returns:
         dict: A message indicating the welcome message.
     """
-    return {"message": "Welcome to the NBA prediction API!"}
+    return {"message": "Welcome to the accidents prediction API!"}
 
 
 @app.post("/login")

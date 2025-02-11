@@ -82,6 +82,7 @@ services:
       - ../grafana_setup/provisioning:/etc/grafana/provisioning
     environment:
       - GF_LOG_MAX_DAYS=7
+      - ../grafana_setup/config.monitoring
     networks:
       - accidents-network
   
