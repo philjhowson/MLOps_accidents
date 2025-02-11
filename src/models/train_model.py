@@ -218,7 +218,7 @@ def main():
     else:
         # Save the model to the discarded path
         discarded_filename = generate_versioned_filename(discarded_output_file_path, 1)
-        check_existing_folder(discarded_filename)
+        check_existing_file(discarded_filename)
         joblib.dump(model, discarded_filename)
         logger.info("Model file data saved in discarded folder.")
         logger.info(discarded_filename)

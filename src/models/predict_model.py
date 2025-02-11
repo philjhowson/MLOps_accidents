@@ -19,7 +19,7 @@ def load_model(model_path):
     Returns:
     model: The loaded model.
     """
-    model = load(model_path)
+    model = joblib.load(model_path)
     return model
 
 def make_predictions(model, new_data):
@@ -74,7 +74,7 @@ def main():
         y_test = np.ravel(y_test)
 
         # Path to the base filename of the model
-        base_model_filename = Config.TRAINED_MODEL_DIR
+        base_model_filename = Config.OUTPUT_TRAINED_MODEL_FILE_RF
 
         # Find the latest versioned model file
         latest_model_file = find_latest_versioned_model(base_model_filename)
@@ -83,7 +83,7 @@ def main():
         print(latest_model_file)
 
         # Load the model
-        model = load(latest_model_file)
+        model = joblib.load(latest_model_file)
         
         # Make predictions using the model
         predictions = make_predictions(model, X_test)

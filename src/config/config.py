@@ -5,7 +5,7 @@ class Config:
     PROCESSED_DATA_DIR = 'data/preprocessed/'      # Place for saving preprocessed and feature engineered data
     TRAINED_MODEL_DIR = 'models/'       # Place for saving trained models
     PREDICTIONS_DATA_DIR = 'data/predictions/'  # Place for saving prediction results
-    DATA_DRIFT_MONOTOR_DIR = 'data/data_drift/' # place for saving data monitoring results
+    DATA_DRIFT_MONOTOR_DIR = 'data_drift/' # place for saving data monitoring results
 
     NEW_DATA_FILE = 'data/new_data/new_data.csv'    # contains fresh new data
     OUTPUT_TRAINED_MODEL_FILE_RF = 'models/model_best_rf'    # Trained random forest classifer model file. We will skip joblib extension
