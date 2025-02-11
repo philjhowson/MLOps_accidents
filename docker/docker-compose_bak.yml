@@ -112,7 +112,7 @@ services:
     #   - PORT=3001
     # see react_frontend/src/.env to update ENV
     volumes:
-      - ../react_frontend:/app
+      - react_frontend:/app
       - /app/node_modules
     stdin_open: true
     tty: true
