@@ -8,10 +8,6 @@ on:
   pull_request:
     branches: [ "cicd" ]
 
-notifications:
-  email:
-    on_failure: never
-
 permissions:
   contents: read
 
