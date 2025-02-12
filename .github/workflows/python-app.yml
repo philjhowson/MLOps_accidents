@@ -48,4 +48,4 @@ jobs:
         docker run -d -p 8888:8888 api_endpoint
     - name: Run Pytest
       run: |
-        pytest test/
+        pytest src/test/
