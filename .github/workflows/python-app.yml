@@ -35,7 +35,7 @@ jobs:
     #     flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Write secrets to DVC config file
       run: |
-        echo "[remote \"origin\"]" > .dvc/config_file.txt
+        echo "['remote \"origin\"']" > .dvc/config_file.txt
         echo "access_key_id = ${{ secrets.PHILJHOWSON_DVC_ACCESS_KEY }}" >> .dvc/config_file.txt
         echo "secret_access_key = ${{ secrets.PHILJHOWSON_DVC_KEY_ID  }}" >> .dvc/config_file.txt
     - name: Run the DVC data pipeline
