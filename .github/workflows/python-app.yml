@@ -4,9 +4,9 @@ name: Python application
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "cicd" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "cicd" ]
 
 permissions:
   contents: read
@@ -36,12 +36,13 @@ jobs:
     - name: Write secrets to DVC config file
       run: |
         echo "[remote \"origin\"]" > .dvc/config_file.txt
-        echo "access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}" >> .dvc/config_file.txt
-        echo "secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .dvc/config_file.txt
+        echo "access_key_id = ${{ secrets.PHILJHOWSON_DVC_ACCESS_KEY }}" >> .dvc/config_file.txt
+        echo "secret_access_key = ${{ secrets.PHILJHOWSON_DVC_KEY_ID  }}" >> .dvc/config_file.txt
     - name: Run the DVC data pipeline
       run: |
         dvc pull -r origin
         dvc repro
+        dvc push -r rigin
     - name: Build the Docker image for model serving
       run: |
         docker build -f src/docker/Dockerfile.api . -t api_endpoint
