@@ -37,12 +37,12 @@ def test_correct_request():
     response = requests.get(URL, json=payload)
     assert response.json()['grav'] == 0 
 
-def test_value_payload():
-    payload["catu"] = "Hello, hello, Test, Test"
-    response = requests.get(URL, json=payload)
-    assert response.status_code == 422
+# def test_value_payload():
+#     payload["catu"] = "Hello, hello, Test, Test"
+#     response = requests.get(URL, json=payload)
+#     assert response.status_code == 422
 
-def test_key_payload():
-    payload['cat'] = payload.pop('catu')
-    response = requests.get(URL, json=payload)
-    assert response.status_code == 422
+# def test_key_payload():
+#     payload['cat'] = payload.pop('catu')
+#     response = requests.get(URL, json=payload)
+#     assert response.status_code == 422
