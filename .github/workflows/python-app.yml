@@ -36,8 +36,8 @@ jobs:
     - name: Write secrets to DVC config file
       run: |
         echo "['remote \"origin\"']" > .dvc/config.local
-        echo "access_key_id = ${{ secrets.PHILJHOWSON_DVC_ACCESS_KEY }}" >> config.local
-        echo "secret_access_key = ${{ secrets.PHILJHOWSON_DVC_KEY_ID  }}" >> config.local
+        echo "access_key_id = ${{ secrets.PHILJHOWSON_DVC_ACCESS_KEY }}" >> .dvc/config.local
+        echo "secret_access_key = ${{ secrets.PHILJHOWSON_DVC_KEY_ID  }}" >> .dvc/config.local
     - name: Run the DVC data pipeline
       run: |
         dvc pull -r origin
