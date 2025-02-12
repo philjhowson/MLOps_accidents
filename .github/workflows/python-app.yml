@@ -45,7 +45,7 @@ jobs:
     - name: Build the Docker image for model serving
       run: |
         docker build -f src/docker/Dockerfile.api . -t api_endpoint
-        docker-compose -f src/docker/docker-compose.yaml up -d
+        docker run -d -p 8888:8888 api_endpoint
     - name: Run Pytest
       run: |
         pytest tests/
