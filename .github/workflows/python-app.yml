@@ -42,7 +42,6 @@ jobs:
       run: |
         dvc pull -r origin
         dvc repro
-        dvc push -r rigin
     - name: Build the Docker image for model serving
       run: |
         docker build -f src/docker/Dockerfile.api . -t api_endpoint
