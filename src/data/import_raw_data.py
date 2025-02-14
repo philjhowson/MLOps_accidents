@@ -1,7 +1,12 @@
 import requests
 import os
 import logging
-from check_structure import check_existing_file, check_existing_folder
+import sys
+
+# Add the project root directory to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
+from src.config.check_structure import check_existing_file, check_existing_folder
 from src.config.config import Config
 
 
