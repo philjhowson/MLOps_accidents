@@ -4,6 +4,8 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile.db
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_USER=ubuntu
       - POSTGRES_PASSWORD=mlops
@@ -37,6 +39,7 @@ services:
       - PREDICTION_SERVICE_PORT=8001
     volumes:
       - ../src/api:/app/src/api
+      - ../src/config:/app/src/config
     networks:
       - accidents-network
   
@@ -56,6 +59,8 @@ services:
       - DB_PASSWORD=mlops
     volumes:
       - ../src/api:/app/src/api
+      - ../src/config:/app/src/config
+      - ../models:/app/models
     networks:
       - accidents-network
 
@@ -98,25 +103,25 @@ services:
     networks:
       - accidents-network
 
-  frontend:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile.react
-    ports:
-      - "3001:3001"
-    depends_on:
-      - api
-    networks:
-      - accidents-network
-    # environment:
-    #   - REACT_APP_API_URL=http://13.48.249.166:8000
-    #   - PORT=3001
-    # see react_frontend/src/.env to update ENV
-    volumes:
-      - ../react_frontend:/app
-      - /app/node_modules
-    stdin_open: true
-    tty: true
+  # frontend:
+  #   build:
+  #     context: ..
+  #     dockerfile: docker/Dockerfile.react
+  #   ports:
+  #     - "3001:3001"
+  #   depends_on:
+  #     - api
+  #   networks:
+  #     - accidents-network
+  #   # environment:
+  #   #   - REACT_APP_API_URL=http://13.48.249.166:8000
+  #   #   - PORT=3001
+  #   # see react_frontend/src/.env to update ENV
+  #   volumes:
+  #     - ../react_frontend:/app
+  #     - /app/node_modules
+  #   stdin_open: true
+  #   tty: true
 
 networks:
   accidents-network:
