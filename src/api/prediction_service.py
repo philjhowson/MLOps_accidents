@@ -4,10 +4,14 @@ import pandas as pd
 import os
 from joblib import load
 import glob
-from src.config.config import Config
+# from src.config.config import Config
 
 # Construct the path to the 'trained_models' directory
-trained_models_dir = Config.TRAINED_MODEL_DIR 
+# Get the path to the project root directory
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+
+# Construct the path to the 'trained_models' directory
+trained_models_dir = os.path.join(project_root, 'models')
 
 # Specify the base filename of the trained model
 base_joblib_filename = 'model_best_rf'
@@ -28,9 +32,6 @@ def find_latest_versioned_model(base_filename):
     return latest_file
 
 
-# Specify the base filename of the trained model
-base_joblib_filename = 'model_best_rf'
-
 # Load the latest versioned model file
 try:
     joblib_file_path = find_latest_versioned_model(base_joblib_filename)
@@ -40,8 +41,10 @@ except Exception as e:
     print(f"Error loading model: {str(e)}")
     model = None
 
-# Load the joblib file
-model = load(joblib_file_path)
+# Patch the missing attribute
+# for estimator in model.estimators_:
+#     if not hasattr(estimator, 'monotonic_cst'):
+#         estimator.monotonic_cst = None
 
 app = FastAPI()
 
@@ -95,7 +98,11 @@ async def predict(input_data: ScoringItem):
     df = pd.DataFrame([input_data.model_dump()])
     # Rename the columns to match the expected names
     
-    # Make a prediction with the loaded model
-    yhat = model.predict(df)
+    # # Make a prediction with the loaded model
+    # yhat = model.predict(df)
+
+    # Predict the target variable for the test set
+    probabilities = model.predict_proba(df)[:, 1] 
+    yhat = (probabilities > 0.5).astype(int)
     # Return the prediction as an answer
     return {"prediction": int(yhat.item())}

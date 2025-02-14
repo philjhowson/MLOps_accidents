@@ -16,7 +16,17 @@ import logging
 import httpx
 import json
 from prometheus_fastapi_instrumentator import Instrumentator
-from prometheus_client import Summary
+from prometheus_client import Summary, Counter, Histogram
+
+# Metrics for API Usage
+login_failures = Counter('login_failures', 'Count of failed login attempts')
+login_success = Counter('login_success', 'successful login')
+db_query_duration = Histogram('db_query_duration_seconds', 'Time taken for DB queries')
+prediction_requests = Counter('prediction_requests', 'Number of predictions requested')
+prediction_verifications = Counter('prediction_verifications', 'Number of predictions verified')
+
+# Enhance the existing inference time metric
+# inference_time_summary = Summary('inference_time_seconds', 'Time taken for inference')
 
 
 logging.basicConfig(level=logging.INFO)
@@ -33,7 +43,8 @@ DB_HOST = os.getenv("DB_HOST", "localhost")  # Uses'db' for Docker Compose
 DB_NAME = os.getenv("DB_NAME", "accidents_db")
 DB_USER = os.getenv("DB_USER", "ubuntu")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "mlops")
-PREDICTION_SERVICE_HOST = os.getenv('PREDICTION_SERVICE_HOST', 'localhost')
+# PREDICTION_SERVICE_HOST = os.getenv('PREDICTION_SERVICE_HOST', 'localhost')
+PREDICTION_SERVICE_HOST = os.getenv('PREDICTION_SERVICE_HOST', '34.246.218.228')
 PREDICTION_SERVICE_PORT = os.getenv('PREDICTION_SERVICE_PORT', '8001')
 
 
@@ -46,7 +57,7 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 
-username = "johndoe"
+username = "accidents"
 password = "secret"
 hashed_password = get_password_hash(password)
 disabled = False
@@ -148,9 +159,12 @@ class UserInDB(User):
 def get_user(username: str):
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute("SELECT username, hashed_password, disabled FROM users WHERE username = %s",
-                (username,))
-    user = cur.fetchone()
+    # cur.execute("SELECT username, hashed_password, disabled FROM users WHERE username = %s",
+    #             (username,))
+    # user = cur.fetchone()
+    with db_query_duration.time():  # Track time spent on query
+        cur.execute("SELECT username, hashed_password, disabled FROM users WHERE username = %s", (username,))
+        user = cur.fetchone()
     cur.close()
     conn.close()
     if user:
@@ -229,6 +243,7 @@ async def login_for_access_token(
 ) -> Token:
     user = authenticate_user(form_data.username, form_data.password)
     if not user:
+        login_failures.inc()
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
@@ -238,6 +253,7 @@ async def login_for_access_token(
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
+    login_success.inc()
     return Token(access_token=access_token, token_type="bearer")
 
 
@@ -302,6 +318,7 @@ async def predict(
     current_user: Annotated[User, Depends(authorize_user)],
     item: ScoringItem
 ):
+    prediction_requests.inc()
     with inference_time_summary.time():
         url = f"http://{PREDICTION_SERVICE_HOST}:{PREDICTION_SERVICE_PORT}/predict"
         async with httpx.AsyncClient() as client:
@@ -333,67 +350,70 @@ class VerificationInput(BaseModel):
     true_value: int
 
 
-@app.get("/verify_random_prediction")
-async def get_random_prediction(
-    current_user: Annotated[User, Depends(authorize_user)],
-):
-    conn = get_db_connection()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    try:
-        cur.execute("""
-            SELECT id, prediction, input_parameters, timestamp
-            FROM predictions
-            WHERE user_verification IS NULL
-            ORDER BY RANDOM()
-            LIMIT 1
-            FOR UPDATE SKIP LOCKED
-        """)
-        prediction = cur.fetchone()
+# @app.get("/verify_random_prediction")
+# async def get_random_prediction(
+#     current_user: Annotated[User, Depends(authorize_user)],
+# ):
+#     conn = get_db_connection()
+#     cur = conn.cursor(cursor_factory=RealDictCursor)
+#     try:
+#         cur.execute("""
+#             SELECT id, prediction, input_parameters, timestamp
+#             FROM predictions
+#             WHERE user_verification IS NULL
+#             ORDER BY RANDOM()
+#             LIMIT 1
+#             FOR UPDATE SKIP LOCKED
+#         """)
+#         prediction = cur.fetchone()
 
-        if not prediction:
-            return {"message": "No unverified predictions available"}
+#         if not prediction:
+#             return {"message": "No unverified predictions available"}
 
-        response = {
-            "prediction_id": prediction['id'],
-            "model_prediction": prediction['prediction'],
-            "date_time": prediction['timestamp'].strftime("%Y-%m-%d %H:%M:%S"),
-            "input_parameters": json.loads(prediction['input_parameters'])
-            if isinstance(prediction['input_parameters'], str) else prediction['input_parameters']
-        }
+#         response = {
+#             "prediction_id": prediction['id'],
+#             "model_prediction": prediction['prediction'],
+#             "date_time": prediction['timestamp'].strftime("%Y-%m-%d %H:%M:%S"),
+#             "input_parameters": json.loads(prediction['input_parameters'])
+#             if isinstance(prediction['input_parameters'], str) else prediction['input_parameters']
+#         }
 
-        return response
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        cur.close()
-        conn.close()
+#         return response
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
+#     finally:
+#         cur.close()
+#         conn.close()
 
 
-@app.post("/verify_random_prediction")
-async def verify_prediction(
-    current_user: Annotated[User, Depends(authorize_user)],
-    verification: VerificationInput
-):
-    # add check to make sure prediction id is available
-    conn = get_db_connection()
-    cur = conn.cursor()
-    try:
-        cur.execute("SELECT * FROM predictions WHERE id = %s", (verification.prediction_id,))
-        prediction = cur.fetchone()
+# @app.post("/verify_random_prediction")
+# async def verify_prediction(
+#     current_user: Annotated[User, Depends(authorize_user)],
+#     verification: VerificationInput
+# ):
+#     # add check to make sure prediction id is available
+#     conn = get_db_connection()
+#     cur = conn.cursor()
+#     try:
+#         cur.execute("SELECT * FROM predictions WHERE id = %s", (verification.prediction_id,))
+#         prediction = cur.fetchone()
 
-        if not prediction:
-            raise HTTPException(status_code=404, detail="Prediction not found")
+#         if not prediction:
+#             raise HTTPException(status_code=404, detail="Prediction not found")
 
-        cur.execute(
-            "UPDATE predictions SET user_verification = %s WHERE id = %s",
-            (verification.true_value, verification.prediction_id)
-        )
-        conn.commit()
+#         cur.execute(
+#             "UPDATE predictions SET user_verification = %s WHERE id = %s",
+#             (verification.true_value, verification.prediction_id)
+#         )
+#         conn.commit()
 
-        return {"message": f"Prediction_id:{verification.prediction_id} verified successfully"}
-    except Exception as e:
-        conn.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        cur.close()
-        conn.close()
+#         prediction_verifications.inc()
+
+#         return {"message": f"Prediction_id:{verification.prediction_id} verified successfully"}
+#     except Exception as e:
+#         conn.rollback()
+#         raise HTTPException(status_code=500, detail=str(e))
+#     finally:
+#         cur.close()
+#         conn.close()
+
