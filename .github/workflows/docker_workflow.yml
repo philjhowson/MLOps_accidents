@@ -18,9 +18,11 @@ jobs:
         uses: actions/checkout@v3
 
       # Set up Docker
-      - name: Set up Docker
-        uses: docker/train_model
-        uses: docker/monitor_api
+      - name: Set up Docker (Train Model)
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker (Monitor API)
+        uses: docker/setup-buildx-action@v2
 
       # Run docker-compose files
       - name: Run docker-compose.model.yml
