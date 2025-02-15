@@ -23,13 +23,13 @@ jobs:
 
       # Run docker-compose files
       - name: Run docker-compose.model.yml
-        run: docker compose -f docker/docker-compose.model.yml up -d
+        run: docker compose -f ${{ github.workspace }}/docker/docker-compose.model.yml up -d
 
       - name: Run docker-compose.api.yml
-        run: docker compose -f docker/docker-compose.api.yml up -d
+        run: docker compose -f ${{ github.workspace }}/docker/docker-compose.api.yml up -d
 
       # Tear down the containers
       - name: Tear down containers
         run: |
-          docker compose -f docker/docker-compose.model.yml down
-          docker compose -f docker/docker-compose.api.yml down
+          docker compose -f ${{ github.workspace }}/docker/docker-compose.model.yml down
+          docker compose -f ${{ github.workspace }}/docker/docker-compose.api.yml down
