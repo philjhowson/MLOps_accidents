@@ -15,7 +15,7 @@ def classification_reports():
     target_ = pd.read_csv('data/preprocessed/y_test.csv')
     target = pd.concat([target, target_], axis = 0)
 
-    updated_data = pd.read_csv('data/preprocessed/features_2022_2023.csv')
+    updated_data = pd.read_csv('data/preprocessed/features_2022-2023.csv')
     updated_target = pd.read_csv('data/preprocessed/targets_2022-2023.csv')
 
     with open('models/best_random_forests.joblib', 'rb') as f:

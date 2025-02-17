@@ -131,7 +131,7 @@ def process_data(input_filepath_users, input_filepath_caract, input_filepath_pla
         os.makedirs(output_folderpath)
 
     #--Saving the dataframes to their respective output file paths
-    for file, filename in zip([feats, target], ['features_2022_2023', 'targets_2022-2023']):
+    for file, filename in zip([feats, target], ['features_2022-2023', 'targets_2022-2023']):
         output_filepath = os.path.join(output_folderpath, f'{filename}.csv')
         if check_existing_file(output_filepath):
             file.to_csv(output_filepath, index=False)

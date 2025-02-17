@@ -5,23 +5,25 @@ stages:
       - src/data/import_raw_data.py
       - src/data/check_structure.py
     outs:
-      - data/raw/caracteristiques-2023.csv
-      - data/raw/lieux-2023.csv
-      - data/raw/usagers-2023.csv
-      - data/raw/vehicules-2023.csv
+      - data/raw/caracteristiques-2021.csv
+      - data/raw/lieux-2021.csv
+      - data/raw/usagers-2021.csv
+      - data/raw/vehicules-2021.csv
+
   preprocess:
     cmd: python src/data/make_dataset.py
     deps:
-      - data/raw/caracteristiques-2023.csv
-      - data/raw/lieux-2023.csv
-      - data/raw/usagers-2023.csv
-      - data/raw/vehicules-2023.csv
+      - data/raw/caracteristiques-2021.csv
+      - data/raw/lieux-2021.csv
+      - data/raw/usagers-2021.csv
+      - data/raw/vehicules-2021.csv
       - src/data/make_dataset.py
     outs:
       - data/preprocessed/X_test.csv
       - data/preprocessed/X_train.csv
       - data/preprocessed/y_test.csv
       - data/preprocessed/y_train.csv
+
   train_rfc:
     cmd: python src/models/train_random_forests.py
     deps:
@@ -35,3 +37,67 @@ stages:
       - models/best_random_forests.joblib
     metrics:
       - metrics/RandomForests_scores.json
+
+  update_data:
+    cmd: python src/data/updated_data.py
+    deps:
+      - src/data/updated_data.py
+      - src/data/check_structure.py
+    outs:
+      - data/raw/caracteristiques-2022.csv
+      - data/raw/lieux-2022.csv
+      - data/raw/usagers-2022.csv
+      - data/raw/vehicules-2022.csv
+      - data/raw/caracteristiques-2023.csv
+      - data/raw/lieux-2023.csv
+      - data/raw/usagers-2023.csv
+      - data/raw/vehicules-2023.csv
+
+  make_updated_dataset:
+    cmd: python src/data/make_updated_dataset.py
+    deps:
+      - src/data/make_updated_dataset.py
+      - src/data/check_structure.py
+      - data/raw/caracteristiques-2022.csv
+      - data/raw/lieux-2022.csv
+      - data/raw/usagers-2022.csv
+      - data/raw/vehicules-2022.csv
+      - data/raw/caracteristiques-2023.csv
+      - data/raw/lieux-2023.csv
+      - data/raw/usagers-2023.csv
+      - data/raw/vehicules-2023.csv
+    outs:
+      - data/preprocessed/features_2022-2023.csv
+      - data/preprocessed/targets_2022-2023.csv
+
+  classification_report:
+    cmd: python src/models/classification_report.py
+    deps:
+      - src/models/classification_report.py
+      - data/preprocessed/X_train.csv
+      - data/preprocessed/X_test.csv
+      - data/preprocessed/y_train.csv
+      - data/preprocessed/y_test.csv
+      - data/preprocessed/features_2022-2023.csv
+      - data/preprocessed/targets_2022-2023.csv
+      - models/best_random_forests.joblib
+    outs:
+      - data/preprocessed/reference_data.csv
+      - data/preprocessed/updated_data.csv
+    metrics:
+      - metrics/reference_data_report.json
+      - metrics/reference_data_report.html
+
+  drift_detection:
+    cmd: python src/models/drift_detection.py
+    deps:
+      - src/models/drift_detection.py
+      - src/models/update_model.py
+      - data/preprocessed/reference_data.csv
+      - data/preprocessed/updated_data.csv
+    metrics:
+      - metrics/updated_RandomForests_scores.json
+    outs:
+      - data/preprocessed/updated_reference_data.csv
+      - models/updated_random_forests.joblib
+      - mlruns/UpdatedRandomForests/

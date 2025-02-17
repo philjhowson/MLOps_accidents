@@ -40,7 +40,7 @@ def update_model(year, month):
     grid_search = GridSearchCV(rf_classifier, params, cv = 3, scoring = 'f1')
     grid_search.fit(X_train, y_train)
 
-    tracking_dir = 'mlruns/RandomForests'
+    tracking_dir = 'mlruns/UpdatedRandomForests'
     working_dir = os.getcwd()
     full_path = os.path.join(working_dir, tracking_dir)
     full_path = full_path.replace('\\', '/')
@@ -49,14 +49,14 @@ def update_model(year, month):
         os.makedirs(full_path)
 
     mlflow.set_tracking_uri(f"file:///{full_path}")
-    mlflow.set_experiment('RandomForests')
+    mlflow.set_experiment('UpdatedRandomForests')
 
     best_index = grid_search.best_index_
     best_params = grid_search.best_params_
     best_model = grid_search.best_estimator_
     best_F1 = grid_search.cv_results_['mean_test_score'][best_index]
 
-    with mlflow.start_run(run_name='RandomForests'):
+    with mlflow.start_run(run_name='UpdatedRandomForests'):
         param_grid_json = json.dumps(grid_search.param_grid, indent=2)
         mlflow.log_param('param_grid', param_grid_json)
         mlflow.set_tag('param_grid_full', param_grid_json)
