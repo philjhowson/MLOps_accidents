@@ -94,6 +94,5 @@ app = FastAPI()
 @app.get("/predict/", summary="Predict the severity of an accident")
 def predict_seriousness_accident(features: AccidentData) -> Prediction:
     features = pd.DataFrame.from_dict(features.dict(), orient='index').T
-    print(features)
     prediction = model.predict(features)
-    return {"prediction": list(prediction)[0]}
+    return {'grav': int(list(prediction)[0])}
