@@ -16,22 +16,34 @@ def main():
 
     # Prompt the user for input file paths
     input_filepath = 'data/raw/'
-    input_filepath_users = os.path.join(input_filepath, "usagers-2021.csv")
-    input_filepath_caract = os.path.join(input_filepath, "caracteristiques-2021.csv")
-    input_filepath_places = os.path.join(input_filepath, "lieux-2021.csv")
-    input_filepath_veh = os.path.join(input_filepath, "vehicules-2021.csv")
+    input_filepath_users = os.path.join(input_filepath, "usagers-2022.csv")
+    input_filepath_caract = os.path.join(input_filepath, "caracteristiques-2022.csv")
+    input_filepath_places = os.path.join(input_filepath, "lieux-2022.csv")
+    input_filepath_veh = os.path.join(input_filepath, "vehicules-2022.csv")
     output_filepath = 'data/preprocessed/'
     
     # Call the main data processing function with the provided file paths
     process_data(input_filepath_users, input_filepath_caract, input_filepath_places, input_filepath_veh, output_filepath)
 
 def process_data(input_filepath_users, input_filepath_caract, input_filepath_places, input_filepath_veh, output_folderpath):
- 
+    input_filepath = 'data/raw/'
     #--Importing dataset
     df_users = pd.read_csv(input_filepath_users, sep = ";")
-    df_caract = pd.read_csv(input_filepath_caract, sep = ";", header = 0, low_memory = False)
+    users = os.path.join(input_filepath, "usagers-2023.csv")
+    users = pd.read_csv(users, sep = ';')
+    df_users = pd.concat([df_users, users], axis = 0)
+    df_caract = pd.read_csv(input_filepath_caract, sep = ";", header = 0, low_memory = False).rename(columns = {'Accident_Id' : 'Num_Acc'})
+    caract = os.path.join(input_filepath, "caracteristiques-2023.csv")
+    caract = pd.read_csv(caract, sep = ';', header = 0, low_memory = False)
+    df_caract = pd.concat([df_caract, caract], axis = 0)
     df_places = pd.read_csv(input_filepath_places, sep = ";", encoding='utf-8', low_memory = False)
+    places = os.path.join(input_filepath, "lieux-2023.csv")
+    places = pd.read_csv(places, sep = ';', encoding='utf-8', low_memory = False)
+    df_places = pd.concat([df_places, places], axis = 0)
     df_veh = pd.read_csv(input_filepath_veh, sep=";")
+    veh = os.path.join(input_filepath, "vehicules-2023.csv")
+    veh = pd.read_csv(veh, sep = ';')
+    df_veh = pd.concat([df_veh, veh], axis = 0)
 
 
         #--Creating new columns
@@ -56,7 +68,8 @@ def process_data(input_filepath_users, input_filepath_caract, input_filepath_pla
     df_caract["com"] = df_caract["com"].str.replace("2B", "202")
 
     #--Converting columns types
-    df_caract[["dep","com", "hour"]] = df_caract[["dep","com", "hour"]].astype(int)
+    df_caract[["dep", "com", "hour"]] = df_caract[["dep", "com", "hour"]].replace("N/C", np.nan)
+    df_caract[["dep","com", "hour"]] = df_caract[["dep","com", "hour"]].fillna(0).astype(int)
 
     dico_to_float = { 'lat': float, 'long':float}
     df_caract["lat"] = df_caract["lat"].str.replace(',', '.')
@@ -100,29 +113,25 @@ def process_data(input_filepath_users, input_filepath_caract, input_filepath_pla
 
     #--Dropping lines with NaN values
     col_to_drop_lines = ['catv', 'vma', 'secu1', 'obsm', 'atm']
-    df = df.dropna(subset = col_to_drop_lines, axis=0)
+    df = df.dropna(subset = col_to_drop_lines, axis = 0).sort_values(by = ['year_acc', 'mois', 'jour'])
 
 
     target = df['grav']
     feats = df.drop(['grav'], axis = 1)
 
-    X_train, X_test, y_train, y_test = train_test_split(feats, target, test_size=0.3, random_state = 42)
 
-    #--Filling NaN values
     col_to_fill_na = ["surf", "circ", "col", "motor"]
-    X_train[col_to_fill_na] = X_train[col_to_fill_na].fillna(X_train[col_to_fill_na].mode().iloc[0])
-    X_test[col_to_fill_na] = X_test[col_to_fill_na].fillna(X_train[col_to_fill_na].mode().iloc[0])
+    feats[col_to_fill_na] = feats[col_to_fill_na].fillna(feats[col_to_fill_na].mode().iloc[0])
 
-    # drop id_usager from train and test set
-    X_train.drop(['id_usager'], axis=1, inplace=True)
-    X_test.drop(['id_usager'], axis=1, inplace=True)
+    feats.drop(['id_usager'], axis=1, inplace = True)
+
 
     # Create folder if necessary 
     if check_existing_folder(output_folderpath) :
         os.makedirs(output_folderpath)
 
     #--Saving the dataframes to their respective output file paths
-    for file, filename in zip([X_train, X_test, y_train, y_test], ['X_train', 'X_test', 'y_train', 'y_test']):
+    for file, filename in zip([feats, target], ['features_2022_2023', 'targets_2022-2023']):
         output_filepath = os.path.join(output_folderpath, f'{filename}.csv')
         if check_existing_file(output_filepath):
             file.to_csv(output_filepath, index=False)

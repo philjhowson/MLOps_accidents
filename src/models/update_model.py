@@ -1,28 +1,34 @@
+import pandas as pd
+import numpy as np
+import json
+import joblib
+import os
 import mlflow
 from mlflow import MlflowClient
 from mlflow.models.signature import infer_signature
-import sklearn
-import os
-import pandas as pd 
-from sklearn import ensemble
 from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import f1_score, roc_auc_score
-import joblib
-import json
-import numpy as np
 
-print(f"joblib version: {joblib.__version__}")
+def update_model(year, month):
 
-def train_rfc():
+    X = pd.read_csv('data/preprocessed/reference_data.csv').drop(columns = ['Probability 0', 'Probability 1'])
+    X_ = pd.read_csv('data/preprocessed/updated_data.csv')
 
-    X_train = pd.read_csv('data/preprocessed/X_train.csv')
-    X_train = X_train.astype({col: 'float64' for col in X_train.select_dtypes(include = 'int').columns})
-    X_test = pd.read_csv('data/preprocessed/X_test.csv')
-    X_test = X_test.astype({col: 'float64' for col in X_test.select_dtypes(include = 'int').columns})
-    y_train = pd.read_csv('data/preprocessed/y_train.csv')
-    y_test = pd.read_csv('data/preprocessed/y_test.csv')
-    y_train = np.ravel(y_train)
-    y_test = np.ravel(y_test)
+    if year == 2022:
+        X1 = X_[(X_['year_acc'] == year) & (X_['mois'] <= month)]
+        X = pd.concat([X, X1], axis = 0)
+        
+    if year == 2023:
+        X1 = X_[X_['year_acc'] == 2022]
+        X2 = X_[(X_['year_acc'] == 2023) & (X_['mois'] <= month)]
+        X = pd.concat([X, X1, X2])
+
+    y = X['grav']
+    X.drop(columns = ['Predictions', 'grav'], inplace = True)
+    
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3,
+                                                        random_state = 42)
 
     params = {'n_estimators' : [50, 100, 150, 200],
               'max_depth' : [5, 10, 15, None],
@@ -30,7 +36,7 @@ def train_rfc():
               'min_samples_leaf' : [1, 2, 5]
               }
 
-    rf_classifier = ensemble.RandomForestClassifier(n_jobs = -1)
+    rf_classifier = RandomForestClassifier(n_jobs = -1)
     grid_search = GridSearchCV(rf_classifier, params, cv = 3, scoring = 'f1')
     grid_search.fit(X_train, y_train)
 
@@ -80,21 +86,24 @@ def train_rfc():
 
     rf_classifier = grid_search.best_estimator_
 
-    model_filename = 'models/best_random_forests.joblib'
+    model_filename = 'models/updated_random_forests.joblib'
     joblib.dump(rf_classifier, model_filename)
-    print('Model trained and saved successfully.')
+    print('Model updated and saved successfully.')
 
     scores = {'Training Score' : grid_search.best_score_}
     y_pred = rf_classifier.predict(X_test)
     test_f1 = f1_score(y_test, y_pred, average = 'weighted')
     scores['Test Score'] = test_f1
 
-    with open('metrics/RandomForests_scores.json', 'w') as f:
+    y_pred = rf_classifier.predict(X)
+    X['Predictions'] = y_pred
+    X['grav'] = y
+
+    X.to_csv('data/preprocessed/updated_reference_data.csv', index = False)
+
+    with open('metrics/updated_RandomForests_scores.json', 'w') as f:
         json.dump(scores, f)
 
     print(f"Test Score: {test_f1}")
     print('Test Scores successfully saved.')
-
-if __name__ == "__main__":
-
-    train_rfc()
+    

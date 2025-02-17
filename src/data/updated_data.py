@@ -28,7 +28,11 @@ def import_raw_data(raw_data_relative_path,
                 print(f'Error accessing the object {input_file}:', response.status_code)
                 
 def main(raw_data_relative_path="./data/raw", 
-        filenames = {"caracteristiques-2023.csv" : "104dbb32-704f-4e99-a71e-43563cb604f2",
+        filenames = {"caracteristiques-2022.csv" : "5fc299c0-4598-4c29-b74c-6a67b0cc27e7",
+                     "lieux-2022.csv": "a6ef711a-1f03-44cb-921a-0ce8ec975995",
+                     "usagers-2022.csv": "62c20524-d442-46f5-bfd8-982c59763ec8", 
+                     "vehicules-2022.csv": "c9742921-4427-41e5-81bc-f13af8bc31a0",
+                     "caracteristiques-2023.csv" : "104dbb32-704f-4e99-a71e-43563cb604f2",
                      "lieux-2023.csv": "8bef19bf-a5e4-46b3-b5f9-a145da4686bc",
                      "usagers-2023.csv": "68848e2a-28dd-4efc-9d5f-d512f7dbe66f", 
                      "vehicules-2023.csv": "146a42f5-19f0-4b3e-a887-5cd8fbef057b"},
