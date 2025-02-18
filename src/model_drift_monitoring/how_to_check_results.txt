@@ -1,0 +1,5 @@
+to check the results of data_drift.py
+go to data_drift and run app.py
+
+to check the result of model_monitoring.py
+to to data_drift folder and run: evidently ui --workspace ./accidents-workspace/

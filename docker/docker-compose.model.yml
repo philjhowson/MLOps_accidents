@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  feature_engineering:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.feature_engineering
+    image: hz/feature_engineering:latest
+    volumes:
+      - ..:/app
+      - ../logs:/app/logs
+
+  model_training:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.model_training
+    image: hz/model_training:latest
+    volumes:
+      - ..:/app
+      - ../logs:/app/logs
+    depends_on:
+      - feature_engineering
