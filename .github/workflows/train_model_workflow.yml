@@ -29,10 +29,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements_trainingModels.txt  # Install dependencies from requirements.txt
           pip install -e .  # Install the package in editable mode
-          pip install dvc
 
       # Step 4: Run Python files
-      - name: Run /src/data/import_raw_model.py
+      - name: Run /src/data/import_raw_data.py
         run: python ${{ github.workspace }}/src/data/import_raw_data.py  # Replace with the path to your first Python file
 
       - name: Run /src/data/make_dataset.py
