@@ -1,0 +1,9 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python3 src/data/import_raw_data.py
+    deps:
+    - path: src/data/import_raw_data.py
+      hash: md5
+      md5: 4579fb0b7010834ffd1d593d28d63b66
+      size: 2151
