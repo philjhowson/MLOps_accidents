@@ -3,10 +3,10 @@ name: Run Python Files
 on:
   push:
     branches:
-      - docker_hz
+      - master
   pull_request:
     branches:
-      - docker_hz
+      - master
 
 jobs:
   run-python-files:
@@ -30,15 +30,13 @@ jobs:
           pip install -r requirements_trainingModels.txt  # Install dependencies from requirements.txt
           pip install -e .  # Install the package in editable mode
           pip install dvc
-      
-      # Step 4: Configure DVC to use DagsHub
-      - name: Configure DVC remote
-        run: |
-          dvc remote add origin https://dagshub.com/philjhowson/MLOps_accidents.s3
-          dvc remote modify origin --local auth basic
-          dvc remote modify origin --local user fef25a34304be7112486a3200dc417e1e1640ba5
-          dvc remote modify origin --local password fef25a34304be7112486a3200dc417e1e1640ba5
 
       # Step 4: Run Python files
+      - name: Run /src/data/import_raw_model.py
+        run: python ${{ github.workspace }}/src/models/import_raw_model.py  # Replace with the path to your first Python file
+
+      - name: Run /src/models/make_dataset.py
+        run: python ${{ github.workspace }}/src/models/make_dataset.py  # Replace with the path to your first Python file
+
       - name: Run /src/models/train_model.py
-        run: python ${{ github.workspace }}/src/models/train_model.py  # Replace with the path to your first Python file
+        run: python ${{ github.workspace }}/src/models/train_model.py  # Replace with the path to your first Python filegit 
