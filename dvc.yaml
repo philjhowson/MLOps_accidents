@@ -3,3 +3,13 @@ stages:
     cmd: python3 src/data/import_raw_data.py
     deps:
     - src/data/import_raw_data.py
+  make_data:
+    cmd: python3 src/data/make_dataset.py
+    deps:
+    - data/raw
+    - src/data/make_dataset.py
+  train_models:
+    cmd: python3 src/models/train_model.py
+    deps:
+    - data/preprocessed
+    - src/models/train_model.py

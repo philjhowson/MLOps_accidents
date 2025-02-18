@@ -7,3 +7,27 @@ stages:
       hash: md5
       md5: 4579fb0b7010834ffd1d593d28d63b66
       size: 2151
+  make_data:
+    cmd: python3 src/data/make_dataset.py
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: 90c3e04bb8fa1558eb70f9096b5b6010.dir
+      size: 31082914
+      nfiles: 4
+    - path: src/data/make_dataset.py
+      hash: md5
+      md5: f30f2bfd34ee1aa145acee656ceb82b4
+      size: 7015
+  train_models:
+    cmd: python3 src/models/train_model.py
+    deps:
+    - path: data/preprocessed
+      hash: md5
+      md5: 42bd984f92cce99760479dece977ac78.dir
+      size: 5882271
+      nfiles: 4
+    - path: src/models/train_model.py
+      hash: md5
+      md5: a33f3e2dcd421325ae47b132ae243e26
+      size: 8829
