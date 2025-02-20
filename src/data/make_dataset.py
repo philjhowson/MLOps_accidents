@@ -16,10 +16,10 @@ def main():
 
     # Prompt the user for input file paths
     input_filepath = 'data/raw/'
-    input_filepath_users = os.path.join(input_filepath, "usagers-2023.csv")
-    input_filepath_caract = os.path.join(input_filepath, "caracteristiques-2023.csv")
-    input_filepath_places = os.path.join(input_filepath, "lieux-2023.csv")
-    input_filepath_veh = os.path.join(input_filepath, "vehicules-2023.csv")
+    input_filepath_users = os.path.join(input_filepath, "usagers-2021.csv")
+    input_filepath_caract = os.path.join(input_filepath, "caracteristiques-2021.csv")
+    input_filepath_places = os.path.join(input_filepath, "lieux-2021.csv")
+    input_filepath_veh = os.path.join(input_filepath, "vehicules-2021.csv")
     output_filepath = 'data/preprocessed/'
     
     # Call the main data processing function with the provided file paths
