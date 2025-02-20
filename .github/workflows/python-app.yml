@@ -48,11 +48,7 @@ jobs:
         docker run --rm -d --name api_endpoint -p 8888:8888 api_endpoint 
     - name: Wait for API to be ready
       run: |
-        for i in {1..10}; do
-          curl --fail http://127.0.0.1:8888/predict/ && break
-          echo "Waiting for API..."
-          sleep 5
-        done
+        sleep 30
     - name: Run Pytest
       run: |
         pytest src/test/
