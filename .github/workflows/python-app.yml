@@ -46,6 +46,7 @@ jobs:
       run: |
         docker build -f src/docker/Dockerfile.api . -t api_endpoint
         docker run --rm -d -p 8888:8888 api_endpoint
+        docker logs -f api_endpoint
         pytest src/test/test_api_endpoint.py
     - name: Run Pytest
       run: |
