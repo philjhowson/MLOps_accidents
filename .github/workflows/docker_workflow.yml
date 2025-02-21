@@ -1,13 +1,13 @@
 name: Docker Compose CI
 
 on:
-  workflow_dispatch:
-  # push:
-  #   branches:
-  #     - docker_hz
-  # pull_request:
-  #   branches:
-  #     - docker_hz
+  # workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   run-docker-compose:

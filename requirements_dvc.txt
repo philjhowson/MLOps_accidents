@@ -1,22 +1,11 @@
 # # local package
 -e .
-
-# # external requirements
-# click
-# Sphinx
-# coverage
-# #awscli>=1.29.0
-# flake8
-# pandas
-# #logging
-# numpy 
-# pathlib 
-# scikit-learn
-# imbalanced-learn
-# joblib
-# #sys
-# #json
-# logger
-# fastapi
-
+logger
+mlflow
+numpy
+pandas
+passlib
+pluggy
+scikit-learn
+scipy
 dvc

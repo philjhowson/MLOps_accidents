@@ -1,4 +1,5 @@
-/data
 /env
 /mlruns
 /postgres_data
+/models
+/myenv

@@ -9,9 +9,20 @@ from evidently.report import Report
 from evidently.metric_preset import ClassificationPreset
 from evidently.ui.workspace import Workspace
 from evidently.pipeline.column_mapping import ColumnMapping
+from prometheus_client import start_http_server, Gauge
 
 from src.config.check_structure import check_existing_file, check_existing_folder
 from src.config.config import Config
+
+# Create a Gauge metric to track the F1 score
+f1_score_metric = Gauge('model_f1_score_difference', 'F1 score difference from the Evidently classification report')
+portNum = 8008
+
+def monitor_f1_score(f1_current,f1_present):
+    """
+    Update the Prometheus metric with the F1 score.
+    """
+    f1_score_metric.set(f1_present - f1_current)
 
 def find_latest_versioned_model(base_filename):
     """
@@ -115,6 +126,12 @@ if __name__ == "__main__":
     # Generate the classification report
     # TODO : complete
     classification_report = generate_classification_report(reference_data, current_data)
+    test = classification_report.as_dict()
+    f1_current = test['metrics'][0]['result']['current']['f1']
+    f1_present = test['metrics'][0]['result']['reference']['f1']
+
+    start_http_server(portNum)
+    monitor_f1_score(f1_current,f1_present)
 
     # Set workspace
     workspace = Workspace(WORKSPACE_NAME)

@@ -1,38 +1,47 @@
 groups:
-# - name: accidents_app_alert_rules
-#   rules:
-#     - alert: APIDown
-#       expr: up{job="fastapi"} == 0
-#       for: 5s
-#       labels:
-#         severity: critical
-#       annotations:
-#         summary: "API is down"
-#         description: "The FastAPI application at :8000 has been down for more than 10 seconds."
+- name: accidents_app_alert_rules
+  rules:
+    - alert: APIDown
+      expr: up{job="fastapi"} == 0
+      for: 5s
+      labels:
+        severity: critical
+      annotations:
+        summary: "API is down"
+        description: "The FastAPI application at :8000 has been down for more than 10 seconds."
 
-#     - alert: high_load
-#       expr: node_load1 > 0.5
-#       for: 2m
-#       labels:
-#         severity: page
-#       annotations:
-#         summary: "Instance {{ $labels.instance }} under high load"
-#         description: "{{ $labels.instance }} of job {{ $labels.job }} is under high load."
+    - alert: high_load
+      expr: node_load1 > 0.5
+      for: 2m
+      labels:
+        severity: page
+      annotations:
+        summary: "Instance {{ $labels.instance }} under high load"
+        description: "{{ $labels.instance }} of job {{ $labels.job }} is under high load."
 
-#     - alert: failed_login
-#       expr: login_failures_total > 3
-#       for: 1m
-#       labels:
-#         severity: critical
-#       annotations:
-#         summary: "login failure in the accidents api service exceeds 3"
-#         description: "login failure in the accidents api service exceeds 3"
+    - alert: failed_login
+      expr: login_failures_total > 3
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "login failure in the accidents api service exceeds 3"
+        description: "login failure in the accidents api service exceeds 3"
 
-#     - alert: successful_login
-#       expr: login_success_total > 0
-#       for: 1m
-#       labels:
-#         severity: critical
-#       annotations:
-#         summary: "successful login"
-#         description: "successful login"
+    - alert: successful_login
+      expr: login_success_total > 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "successful login"
+        description: "successful login"
+
+    - alert: LowF1Score
+      expr: f1_score > 0.01  # Alert if The F1 score differnece between reference and current has dropped above 0.1.
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Low F1 Score"
+        description: "The F1 score differnece between reference and current has dropped above 0.1."

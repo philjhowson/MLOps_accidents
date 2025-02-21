@@ -43,8 +43,8 @@ DB_HOST = os.getenv("DB_HOST", "localhost")  # Uses'db' for Docker Compose
 DB_NAME = os.getenv("DB_NAME", "accidents_db")
 DB_USER = os.getenv("DB_USER", "ubuntu")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "mlops")
-# PREDICTION_SERVICE_HOST = os.getenv('PREDICTION_SERVICE_HOST', 'localhost')
-PREDICTION_SERVICE_HOST = os.getenv('PREDICTION_SERVICE_HOST', '34.246.218.228')
+PREDICTION_SERVICE_HOST = os.getenv('PREDICTION_SERVICE_HOST', 'localhost')
+# PREDICTION_SERVICE_HOST = os.getenv('PREDICTION_SERVICE_HOST', '3.250.147.95')
 PREDICTION_SERVICE_PORT = os.getenv('PREDICTION_SERVICE_PORT', '8001')
 
 

@@ -30,3 +30,8 @@ scrape_configs:
   metrics_path: /metrics
   static_configs:
     - targets: ['api:8000']
+- job_name: 'f1_score_monitor'
+  scrape_interval: 5s
+  metrics_path: /metrics
+  static_configs:
+    - targets: ['model_monitoring:8008']  # Replace with the appropriate host if running in a container

@@ -4,7 +4,7 @@ global:
   smtp_auth_username: "prometheus.datascientest@gmail.com"
   smtp_auth_password: "qsyhonvlraonufcg"
   smtp_require_tls: false
-  slack_api_url: 'https://hooks.slack.com/services/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'
+  slack_api_url: 'https://hooks.slack.com/services/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'
 
 route:
   group_by: ['alertname']
