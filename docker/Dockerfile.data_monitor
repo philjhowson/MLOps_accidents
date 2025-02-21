@@ -1,0 +1,14 @@
+# Use the official Python image from the Docker Hub
+FROM python:3.9-bullseye
+
+# Copy the current directory contents into the container at /app/nba_mlops
+COPY . /app
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# Set the working directory in the container
+WORKDIR /app/src/model_drift_monitoring
+
+# Run the FastAPI app using Uvicorn
+CMD ["python", "model_training.py"]

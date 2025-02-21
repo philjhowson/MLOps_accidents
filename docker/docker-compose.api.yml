@@ -103,6 +103,18 @@ services:
     networks:
       - accidents-network
 
+  model_monitoring:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.data_monitor
+    image: hz/model_monitoring:latest
+    ports: 
+      - 8008:8008
+    volumes:
+      - ..:/app
+      - ../logs:/app/logs
+      - ../data_drift:/app/data_drift
+
   # frontend:
   #   build:
   #     context: ..
