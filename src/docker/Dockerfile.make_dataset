@@ -1,0 +1,20 @@
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements file
+COPY src/data/requirements.txt .
+
+# Install dependencies
+RUN pip install -r requirements.txt
+
+# Copy script and data
+COPY src/data/make_dataset.py .  
+COPY src/data/check_structure.py .
+
+# Create raw and processed data folder
+RUN mkdir -p app/data/raw
+RUN mkdir -p app/data/preprocessed
+
+CMD ["python3", "make_dataset.py"]

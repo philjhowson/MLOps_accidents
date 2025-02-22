@@ -1,9 +1,37 @@
 version: '3.8'
 
 services:
-  api_endpoint:
-    image: api_endpoint
-    container_name: api_endpoint
-    ports:
-      - "8888:8888"
-    
+  import-raw-data:
+    build:
+      context: ../../
+      dockerfile: src/docker/Dockerfile.import_raw_data
+    image: import-raw-data:latest
+    volumes:
+      - ${PWD}/data/raw:/app/data/raw
+    depends_on: []
+
+  make-dataset:
+    build:
+      context: ../../
+      dockerfile: src/docker/Dockerfile.make_dataset
+    image: make-dataset:latest
+    volumes:
+      - ${PWD}/data/preprocessed:/app/data/preprocessed
+      - ${PWD}/data/raw:/app/data/raw
+    depends_on:
+      import-raw-data:
+        condition: service_completed_successfully
+  
+  train-model:
+    build:
+      context: ../../
+      dockerfile: src/docker/Dockerfile.train_random_forest
+    image: train-model:latest
+    volumes:
+      - ${PWD}/data/preprocessed:/app/data/preprocessed
+      - ${PWD}/models:/app/models
+      - ${PWD}/metrics:/app/metrics
+      - ${PWD}/mlruns:/app/mlruns
+    depends_on:
+      make-dataset:
+        condition: service_completed_successfully

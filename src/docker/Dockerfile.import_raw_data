@@ -1,0 +1,21 @@
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+RUN pwd
+
+# Copy requirements file
+COPY ./src/data/requirements.txt .
+
+# Install dependencies
+RUN pip install -r requirements.txt
+
+# Copy script and data
+COPY ./src/data/import_raw_data.py .  
+COPY ./src/data/check_structure.py .
+
+# Create raw data folder
+RUN mkdir -p app/data/raw
+
+CMD ["python3", "import_raw_data.py"]
