@@ -7,6 +7,9 @@ from sklearn.model_selection import train_test_split
 from check_structure import check_existing_file, check_existing_folder
 import os
 
+import warnings
+warnings.filterwarnings("ignore")
+
 def main():
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../preprocessed).
@@ -23,7 +26,8 @@ def main():
     output_filepath = 'data/preprocessed/'
     
     # Call the main data processing function with the provided file paths
-    process_data(input_filepath_users, input_filepath_caract, input_filepath_places, input_filepath_veh, output_filepath)
+    df = process_data(input_filepath_users, input_filepath_caract, input_filepath_places, input_filepath_veh, output_filepath)
+    split_data(df, output_filepath)
 
 def process_data(input_filepath_users, input_filepath_caract, input_filepath_places, input_filepath_veh, output_folderpath):
  
@@ -103,7 +107,9 @@ def process_data(input_filepath_users, input_filepath_caract, input_filepath_pla
     col_to_drop_lines = ['catv', 'vma', 'secu1', 'obsm', 'atm']
     df = df.dropna(subset = col_to_drop_lines, axis=0)
 
+    return df
 
+def split_data(df, output_folderpath):
     target = df['grav']
     feats = df.drop(['grav'], axis = 1)
 
@@ -115,12 +121,13 @@ def process_data(input_filepath_users, input_filepath_caract, input_filepath_pla
     X_test[col_to_fill_na] = X_test[col_to_fill_na].fillna(X_train[col_to_fill_na].mode().iloc[0])
 
     # drop id_usager from train and test set
-    X_train.drop(['id_usager'], axis=1, inplace=True)
-    X_test.drop(['id_usager'], axis=1, inplace=True)
+    # X_train.drop(['id_usager'], axis=1, inplace=True)
+    # X_test.drop(['id_usager'], axis=1, inplace=True)
 
     # Create folder if necessary 
     if check_existing_folder(output_folderpath) :
         os.makedirs(output_folderpath)
+    
 
     #--Saving the dataframes to their respective output file paths
     for file, filename in zip([X_train, X_test, y_train, y_test], ['X_train', 'X_test', 'y_train', 'y_test']):
@@ -133,7 +140,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format=log_fmt)
 
     # not used in this stub but often useful for finding various files
-    project_dir = Path(__file__).resolve().parents[2]
+    #project_dir = Path(__file__).resolve().parents[2]
 
 
     main()

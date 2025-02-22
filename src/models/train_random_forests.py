@@ -11,10 +11,17 @@ from sklearn.metrics import f1_score
 import joblib
 import json
 import numpy as np
+import logging
+
+import warnings
+logging.getLogger("mlflow").setLevel(logging.ERROR)
+logging.getLogger("root").setLevel(logging.ERROR)
+warnings.filterwarnings("ignore")
 
 print(f"joblib version: {joblib.__version__}")
 
 def train_rfc():
+    print("Training Random Forests...")
 
     X_train = pd.read_csv('data/preprocessed/X_train.csv')
     X_test = pd.read_csv('data/preprocessed/X_test.csv')
@@ -24,10 +31,10 @@ def train_rfc():
     y_test = np.ravel(y_test)
 
     #set parameters
-    params = {'n_estimators' : [50, 100, 150, 200],
-              'max_depth' : [5, 10, 15, None],
-              'min_samples_split' : [2, 5, 10],
-              'min_samples_leaf' : [1, 2, 5]
+    params = {'n_estimators' : [50, 100],# 150, 200],
+              'max_depth' : [5, 10], # 15, None],
+              'min_samples_split' : [2],# 5, 10],
+              'min_samples_leaf' : [1],# 2, 5]
               }
 
     #initialize mlflow
