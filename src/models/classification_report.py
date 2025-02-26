@@ -116,7 +116,7 @@ def updated_classification_report(year = None, month = None):
     probabilities = model.predict_proba(reference_data)
     preds = model.predict(reference_data)
     reference_data['Predictions'] = preds
-    reference_data['Probability 0'], data['Probability 1'] = probabilities[:, 0], probabilities[:, 1]
+    reference_data['Probability 0'], reference_data['Probability 1'] = probabilities[:, 0], probabilities[:, 1]
     reference_data = pd.concat([reference_data, target], axis = 1)
          
     column_mapping = ColumnMapping()
