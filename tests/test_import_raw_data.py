@@ -1,10 +1,10 @@
 import sys
 import os
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src/data/')))
 
 import pytest
-from src.data.import_raw_data import main
+from import_raw_data import main
 
 def test_import_data():
 

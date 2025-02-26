@@ -11,6 +11,8 @@ models/
 data/
 mlruns/
 metrics/
+.ruff_cache
+.pytest_cache
 
 #include subfolders with the same name
 
