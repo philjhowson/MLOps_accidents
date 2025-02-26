@@ -174,18 +174,70 @@ stages:
       size: 160139977
     - path: src/models/classification_report.py
       hash: md5
-      md5: 80adc1ebe24e66f74b8c6cc9acb89d97
-      size: 6733
+      md5: 40112d816dc8164f3681dc0a6f7da44e
+      size: 6743
     outs:
     - path: data/preprocessed/test_reference_data.csv
       hash: md5
-      md5: 274c19e8e981d930bd7a2bb2bede5650
-      size: 2436858
+      md5: f9abec63bab3f652dbb51ce2c6db6703
+      size: 2436606
     - path: metrics/classification_reports/original/reference_classification_report.html
       hash: md5
-      md5: b5dd208cc9fcec4b6ac177d6c180e466
-      size: 5428779
+      md5: ce2c32757cd3be92295e3a939b0313ce
+      size: 5428556
     - path: metrics/classification_reports/original/reference_classification_report.json
       hash: md5
-      md5: 2fed162723a11773e4ee52a3446c6968
-      size: 3123
+      md5: 11a4a2b831e01c60757ca2e139069525
+      size: 3124
+  update_dataset:
+    cmd: python src/data/make_updated_dataset.py
+    deps:
+    - path: data/raw/caracteristiques-2022.csv
+      hash: md5
+      md5: 461585a5739fa41a03087e2cb68eccda
+      size: 6896709
+    - path: data/raw/caracteristiques-2023.csv
+      hash: md5
+      md5: e35bf80bbc0fde85854b8b070744ea3c
+      size: 6604415
+    - path: data/raw/lieux-2022.csv
+      hash: md5
+      md5: ae47e49627a9c3972d64d6c5928193c2
+      size: 5619112
+    - path: data/raw/lieux-2023.csv
+      hash: md5
+      md5: 4f3d5512c25ff1a130142ae9e7596fe2
+      size: 7179735
+    - path: data/raw/usagers-2022.csv
+      hash: md5
+      md5: 150386649713bd43af28440ec89a22fc
+      size: 13711985
+    - path: data/raw/usagers-2023.csv
+      hash: md5
+      md5: 4f93ff7e35e8e683c35be32808670633
+      size: 14944539
+    - path: data/raw/vehicules-2022.csv
+      hash: md5
+      md5: 4c872c0feb09857dbac2bb47d3a54036
+      size: 6210951
+    - path: data/raw/vehicules-2023.csv
+      hash: md5
+      md5: b830347a02c375a665320dd77315760a
+      size: 6806168
+    - path: src/data/check_structure.py
+      hash: md5
+      md5: 027528e78aa4fd90976de24dd6c4e072
+      size: 391
+    - path: src/data/make_updated_dataset.py
+      hash: md5
+      md5: 6cd5e89e21f502d67752f62312cba7f7
+      size: 7247
+    outs:
+    - path: data/preprocessed/features_2022-2023.csv
+      hash: md5
+      md5: 6fd970aa77bd3a14e729bf03da54188e
+      size: 12530845
+    - path: data/preprocessed/targets_2022-2023.csv
+      hash: md5
+      md5: 0668c532d9ff25ec008e428e89d657ea
+      size: 353925

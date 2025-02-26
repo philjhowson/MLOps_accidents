@@ -63,3 +63,19 @@ stages:
       - data/raw/lieux-2023.csv
       - data/raw/usagers-2023.csv
       - data/raw/vehicules-2023.csv
+  update_dataset:
+    cmd: python src/data/make_updated_dataset.py
+    deps:
+      - src/data/make_updated_dataset.py
+      - src/data/check_structure.py
+      - data/raw/caracteristiques-2022.csv
+      - data/raw/lieux-2022.csv
+      - data/raw/usagers-2022.csv
+      - data/raw/vehicules-2022.csv
+      - data/raw/caracteristiques-2023.csv
+      - data/raw/lieux-2023.csv
+      - data/raw/usagers-2023.csv
+      - data/raw/vehicules-2023.csv
+    outs:
+      - data/preprocessed/features_2022-2023.csv
+      - data/preprocessed/targets_2022-2023.csv
