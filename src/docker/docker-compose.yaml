@@ -21,6 +21,17 @@ services:
     depends_on:
       import-raw-data:
         condition: service_completed_successfully
+
+  split-dataset:
+    build:
+      context: ../../
+      dockerfile: src/docker/Dockerfile.split_dataset
+    image: split-dataset:latest
+    volumes:
+      - ${PWD}/data/preprocessed:/app/data/preprocessed
+    depends_on:
+      make-dataset:
+        condition: service_completed_successfully
   
   train-model:
     build:
@@ -33,5 +44,14 @@ services:
       - ${PWD}/metrics:/app/metrics
       - ${PWD}/mlruns:/app/mlruns
     depends_on:
-      make-dataset:
+      split-dataset:
         condition: service_completed_successfully
+
+  simulate-data:
+    build:
+      context: ../../
+      dockerfile: src/docker/Dockerfile.simulate_data
+    image: simulate-data:latest
+    volumes:
+      - ${PWD}/data/preprocessed:/app/data/preprocessed
+      - ${PWD}/data/raw:/app/data/raw
