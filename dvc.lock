@@ -234,59 +234,48 @@ stages:
       size: 84644617
     - path: src/models/classification_report.py
       hash: md5
-      md5: 24d380275d5bf980c7d4a6ecc84efe13
-      size: 2343
+      md5: 98a211e8726042a39be37d4e862b15ad
+      size: 4025
     outs:
     - path: data/preprocessed/reference_data.csv
       hash: md5
-      md5: a213e16f6f6daaeac354193fe5ad0827
-      size: 8157314
-    - path: data/preprocessed/updated_data.csv
+      md5: 75065114e416310c2ea28ceedf70522f
+      size: 8157436
+    - path: metrics/classification_reports/original/
       hash: md5
-      md5: c861e0d6516207ca03098655cf08ccf6
-      size: 13002694
-    - path: metrics/reference_data_report.html
-      hash: md5
-      md5: 95f60e4161c5e2dd909f60a3c0714c16
-      size: 2978987
-    - path: metrics/reference_data_report.json
-      hash: md5
-      md5: 762928d19b8ab92965d6bbe1c249a736
-      size: 1706
+      md5: cdc89f12f74eaa3a31e5dc168708f713.dir
+      size: 2980693
+      nfiles: 2
   drift_detection:
     cmd: python src/models/drift_detection.py
     deps:
+    - path: data/preprocessed/features_2022-2023.csv
+      hash: md5
+      md5: ef7446cc510c7d8c288fc41e079325f5
+      size: 12530785
     - path: data/preprocessed/reference_data.csv
       hash: md5
-      md5: a213e16f6f6daaeac354193fe5ad0827
-      size: 8157314
-    - path: data/preprocessed/updated_data.csv
+      md5: 75065114e416310c2ea28ceedf70522f
+      size: 8157436
+    - path: data/preprocessed/targets_2022-2023.csv
       hash: md5
-      md5: c861e0d6516207ca03098655cf08ccf6
-      size: 13002694
+      md5: 0668c532d9ff25ec008e428e89d657ea
+      size: 353925
     - path: src/models/drift_detection.py
       hash: md5
-      md5: 79f261f937bfe62e6ead455d9ccbb162
-      size: 3476
+      md5: a7d74bb87da966904f77308c939ff3dc
+      size: 4457
     - path: src/models/update_model.py
       hash: md5
-      md5: e53c5a39562e28ff5f71b5d4985f22f3
-      size: 3946
+      md5: 8656a0491905587aa0569ec711f68c2f
+      size: 4275
     outs:
     - path: data/preprocessed/updated_reference_data.csv
       hash: md5
-      md5: 537daa287104b34884bc1e46c4fcb178
-      size: 19048778
-    - path: metrics/updated_RandomForests_scores.json
+      md5: e66b9312f79772f33118aeb1be191f07
+      size: 818996
+    - path: metrics/model_updates/
       hash: md5
-      md5: 471d58d00b8f91d70419a9d72eca470c
-      size: 72
-    - path: mlruns/UpdatedRandomForests/
-      hash: md5
-      md5: e446fca71e311de925695204e9c41131.dir
-      size: 3681
-      nfiles: 55
-    - path: models/updated_random_forests.joblib
-      hash: md5
-      md5: c1d4861ef60565b675266a981f5ebefd
-      size: 659221897
+      md5: f2d00fdcc77267fcfd0938ff40945cb6.dir
+      size: 33772
+      nfiles: 1

@@ -120,7 +120,7 @@ def process_data(input_filepath_users, input_filepath_caract, input_filepath_pla
     feats = df.drop(['grav'], axis = 1)
 
 
-    col_to_fill_na = ["surf", "circ", "col", "motor"]
+    col_to_fill_na = ["situ", "surf", "circ", "col", "motor"]
     feats[col_to_fill_na] = feats[col_to_fill_na].fillna(feats[col_to_fill_na].mode().iloc[0])
 
     feats.drop(['id_usager'], axis=1, inplace = True)

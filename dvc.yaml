@@ -83,10 +83,8 @@ stages:
       - models/best_random_forests.joblib
     outs:
       - data/preprocessed/reference_data.csv
-      - data/preprocessed/updated_data.csv
     metrics:
-      - metrics/reference_data_report.json
-      - metrics/reference_data_report.html
+      - metrics/classification_reports/original/
 
   drift_detection:
     cmd: python src/models/drift_detection.py
@@ -94,10 +92,9 @@ stages:
       - src/models/drift_detection.py
       - src/models/update_model.py
       - data/preprocessed/reference_data.csv
-      - data/preprocessed/updated_data.csv
-    metrics:
-      - metrics/updated_RandomForests_scores.json
+      - data/preprocessed/features_2022-2023.csv
+      - data/preprocessed/targets_2022-2023.csv
     outs:
       - data/preprocessed/updated_reference_data.csv
-      - models/updated_random_forests.joblib
-      - mlruns/UpdatedRandomForests/
+    metrics:
+      - metrics/model_updates/

@@ -9,12 +9,15 @@ from mlflow.models.signature import infer_signature
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import f1_score, roc_auc_score
+from pathlib import Path
 
 def update_model(year, month):
 
-    X = pd.read_csv('data/preprocessed/reference_data.csv').drop(columns = ['Probability 0', 'Probability 1'])
-    X_ = pd.read_csv('data/preprocessed/updated_data.csv')
-
+    X = pd.read_csv(ref_data).drop(columns = ['Predictions', 'Probability 0', 'Probability 1'])
+    features = pd.read_csv('data/preprocessed/features_2022-2023.csv')
+    targets = pd.read_csv('data/preprocessed/targets_2022-2023.csv')
+    X_ = pd.concat([features, targets], axis = 1)
+    
     if year == 2022:
         X1 = X_[(X_['year_acc'] == year) & (X_['mois'] <= month)]
         X = pd.concat([X, X1], axis = 0)
@@ -25,10 +28,14 @@ def update_model(year, month):
         X = pd.concat([X, X1, X2])
 
     y = X['grav']
-    X.drop(columns = ['Predictions', 'grav'], inplace = True)
-    
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3,
-                                                        random_state = 42)
+    X.drop(columns = ['grav'], inplace = True)
+
+    X_test = pd.read_csv('data/preprocessed/X_test.csv')
+    y_test = pd.read_csv('data/preprocessed/y_test.csv')
+    X_train = X.merge(X_test, on=list(X.columns), how = 'left', indicator = True)
+    X_train = X_cleaned[X_cleaned['_merge'] == 'left_only'].drop(columns = ['_merge'])
+    indices = y.index.isin(X_train.index)
+    y_train = y[indices]
 
     params = {'n_estimators' : [50, 100, 150, 200],
               'max_depth' : [5, 10, 15, None],
@@ -96,7 +103,9 @@ def update_model(year, month):
     scores['Test Score'] = test_f1
 
     y_pred = rf_classifier.predict(X)
+    y_proba = rf_classifier.predict_proba(X)
     X['Predictions'] = y_pred
+    X['Probability 0'], X['Probability 1'] = y_proba[:, 0], y_proba[:, 1]
     X['grav'] = y
 
     X.to_csv('data/preprocessed/updated_reference_data.csv', index = False)
