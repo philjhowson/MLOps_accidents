@@ -35,6 +35,20 @@ stages:
       - models/best_random_forests.joblib
     metrics:
       - metrics/RandomForests_scores.json
+  classification_report:
+    cmd: python src/models/classification_report.py
+    deps:
+      - src/models/classification_report.py
+      - data/preprocessed/X_train.csv
+      - data/preprocessed/X_test.csv
+      - data/preprocessed/y_train.csv
+      - data/preprocessed/y_test.csv
+      - models/best_random_forests.joblib
+    outs:
+      - data/preprocessed/test_reference_data.csv
+    metrics:
+      - metrics/classification_reports/original/reference_classification_report.json
+      - metrics/classification_reports/original/reference_classification_report.html
   update_data:
     cmd: python src/data/update_data.py
     deps:

@@ -149,3 +149,43 @@ stages:
       hash: md5
       md5: b830347a02c375a665320dd77315760a
       size: 6806168
+  classification_report:
+    cmd: python src/models/classification_report.py
+    deps:
+    - path: data/preprocessed/X_test.csv
+      hash: md5
+      md5: 08ec643f689d5be8dd91206e75188d4c
+      size: 1747890
+    - path: data/preprocessed/X_train.csv
+      hash: md5
+      md5: 91495cf14772dcdd1e100cfe612edaa1
+      size: 4079716
+    - path: data/preprocessed/y_test.csv
+      hash: md5
+      md5: 12ed905481ea83626b902d2f55f6cd6f
+      size: 49236
+    - path: data/preprocessed/y_train.csv
+      hash: md5
+      md5: f149204136ae482970fe0577b3d97432
+      size: 114873
+    - path: models/best_random_forests.joblib
+      hash: md5
+      md5: 4eaf30d5a12021075cd2a03cc8b95781
+      size: 160139977
+    - path: src/models/classification_report.py
+      hash: md5
+      md5: 80adc1ebe24e66f74b8c6cc9acb89d97
+      size: 6733
+    outs:
+    - path: data/preprocessed/test_reference_data.csv
+      hash: md5
+      md5: 274c19e8e981d930bd7a2bb2bede5650
+      size: 2436858
+    - path: metrics/classification_reports/original/reference_classification_report.html
+      hash: md5
+      md5: b5dd208cc9fcec4b6ac177d6c180e466
+      size: 5428779
+    - path: metrics/classification_reports/original/reference_classification_report.json
+      hash: md5
+      md5: 2fed162723a11773e4ee52a3446c6968
+      size: 3123
