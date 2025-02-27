@@ -1,0 +1,79 @@
+import requests
+import os
+import logging
+from check_structure import check_existing_file, check_existing_folder
+from make_dataset import process_data
+import pandas as pd
+
+
+def import_raw_data(raw_data_relative_path, 
+                    filenames,
+                    download_link):
+    '''import filenames from bucket_folder_url in raw_data_relative_path'''
+    if check_existing_folder(raw_data_relative_path):
+        os.makedirs(raw_data_relative_path)
+    # download all the files
+    for filename, identifier in filenames.items():
+        input_file = os.path.join(download_link, identifier)
+        output_file = os.path.join(raw_data_relative_path, filename)
+        if check_existing_file(output_file):
+            object_url = input_file
+            print(f'downloading {input_file} as {os.path.basename(output_file)}')
+            response = requests.get(object_url)
+            if response.status_code == 200:
+                # Process the response content as needed
+                content = response.text
+                text_file = open(output_file, "wb")
+                text_file.write(content.encode('utf-8'))
+                text_file.close()
+            else:
+                print(f'Error accessing the object {input_file}:', response.status_code)
+
+def combine_datasets():
+    input_filepath = 'data/raw/'
+    output_filepath = 'data/preprocessed/'
+
+    input_filepath_users_2022 = os.path.join(input_filepath, "usagers-2022.csv")
+    input_filepath_caract_2022 = os.path.join(input_filepath, "caracteristiques-2022.csv")
+    input_filepath_places_2022 = os.path.join(input_filepath, "lieux-2022.csv")
+    input_filepath_veh_2022 = os.path.join(input_filepath, "vehicules-2022.csv")
+
+    input_filepath_users_2023 = os.path.join(input_filepath, "usagers-2023.csv")
+    input_filepath_caract_2023 = os.path.join(input_filepath, "caracteristiques-2023.csv")
+    input_filepath_places_2023 = os.path.join(input_filepath, "lieux-2023.csv")
+    input_filepath_veh_2023 = os.path.join(input_filepath, "vehicules-2023.csv")
+
+    df_2022 = process_data(input_filepath_users_2022, input_filepath_caract_2022, input_filepath_places_2022, input_filepath_veh_2022, output_filepath)
+    df_2023 = process_data(input_filepath_users_2023, input_filepath_caract_2023, input_filepath_places_2023, input_filepath_veh_2023, output_filepath)
+
+    df = pd.concat([df_2022, df_2023])
+    df.drop('id_usager', axis = 1, inplace = True)
+
+    if check_existing_folder(output_filepath):
+        os.makedirs(output_filepath)
+
+    df.to_csv(os.path.join(output_filepath, "simulated_data.csv"), index = False)
+    
+                
+def main(raw_data_relative_path="./data/raw", 
+        filenames = {"caracteristiques-2022.csv" : "5fc299c0-4598-4c29-b74c-6a67b0cc27e7",
+                     "lieux-2022.csv": "a6ef711a-1f03-44cb-921a-0ce8ec975995",
+                     "usagers-2022.csv": "62c20524-d442-46f5-bfd8-982c59763ec8", 
+                     "vehicules-2022.csv": "c9742921-4427-41e5-81bc-f13af8bc31a0",
+                     "caracteristiques-2023.csv" : "104dbb32-704f-4e99-a71e-43563cb604f2",
+                     "lieux-2023.csv": "8bef19bf-a5e4-46b3-b5f9-a145da4686bc",
+                     "usagers-2023.csv": "68848e2a-28dd-4efc-9d5f-d512f7dbe66f", 
+                     "vehicules-2023.csv": "146a42f5-19f0-4b3e-a887-5cd8fbef057b"},
+        download_link= "https://www.data.gouv.fr/fr/datasets/r/"          
+        ):
+    """ Download data from french governmental platform and save it in the raw folder 
+    """
+    import_raw_data(raw_data_relative_path, filenames, download_link)
+    combine_datasets()
+    logger = logging.getLogger(__name__)
+    logger.info('create simulation data set')
+
+
+
+if __name__ == '__main__':
+    main()

@@ -15,7 +15,7 @@ def main():
         cleaned data ready to be analyzed (saved in ../preprocessed).
     """
     logger = logging.getLogger(__name__)
-    logger.info('making final data set from raw data')
+    logger.info('create training data set')
 
     # Prompt the user for input file paths
     input_filepath = 'data/raw/'
@@ -37,6 +37,8 @@ def process_data(input_filepath_users, input_filepath_caract, input_filepath_pla
     df_places = pd.read_csv(input_filepath_places, sep = ";", encoding='utf-8')
     df_veh = pd.read_csv(input_filepath_veh, sep=";")
 
+    if 'Accident_Id' in df_caract.columns:
+        df_caract.rename(columns={'Accident_Id': 'Num_Acc'}, inplace=True)
 
         #--Creating new columns
     nb_victim = pd.crosstab(df_users.Num_Acc, "count").reset_index()
@@ -58,6 +60,8 @@ def process_data(input_filepath_users, input_filepath_caract, input_filepath_pla
     df_caract["dep"] = df_caract["dep"].str.replace("2B", "202")
     df_caract["com"] = df_caract["com"].str.replace("2A", "201")
     df_caract["com"] = df_caract["com"].str.replace("2B", "202")
+
+    df_caract = df_caract[df_caract["com"] != "N/C"]
 
     #--Converting columns types
     df_caract[["dep","com", "hour"]] = df_caract[["dep","com", "hour"]].astype(int)
