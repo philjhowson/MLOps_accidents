@@ -1,6 +1,8 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime
+import sys
+import os
 from models.drift_detection import drift_detection
 
 default_args = {
@@ -10,9 +12,11 @@ default_args = {
     'retries' : 1}
 
 with DAG('drift_detection', default_args = default_args,
-         schedule = '/5 * * * *', catchup = False) as dag:
+         schedule = '*/5 * * * *', catchup = False) as dag:
 
-    #Task: Perform Drift Detection
+    # Task: Perform Drift Detection
     drift_detection_task = PythonOperator(
-        task_id = 'drift_detection',
-        python_callable = drift_detection)
+        task_id = "drift_detection",
+        python_callable = drift_detection,
+    )
+
