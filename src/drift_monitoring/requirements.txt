@@ -1,0 +1,44 @@
+# external requirements
+click
+Sphinx
+coverage
+#awscli>=1.29.0
+flake8
+pandas
+#logging
+numpy 
+pathlib 
+scikit-learn
+imbalanced-learn
+joblib
+#sys
+#json
+dvc
+dvc-s3
+ruff
+mlflow
+pytest
+
+# API
+requests
+fastapi
+joblib
+pandas
+pydantic
+uvicorn
+scikit-learn
+
+# drift monitoring
+prefect
+tqdm
+requests
+joblib
+pyarrow
+psycopg
+psycopg_binary
+evidently 
+pandas
+numpy
+scikit-learn
+jupyter
+matplotlib

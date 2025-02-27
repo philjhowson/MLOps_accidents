@@ -1,0 +1,6 @@
+custom_queries:
+  f1_score_query:
+    query: "SELECT f1_score FROM mlops_accidents ORDER BY timestamp DESC LIMIT 1"
+    metrics:
+      - f1_score
+    value-attribute: "f1_score"

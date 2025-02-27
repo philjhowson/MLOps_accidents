@@ -1,0 +1,11 @@
+groups:
+  - name: postgres_alerts
+    rules:
+      - alert: HighF1Score
+        expr: f1_score > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "F1 Score Exceeded Threshold"
+          description: "The average F1 score in the last 24 hours has exceeded 0.05."

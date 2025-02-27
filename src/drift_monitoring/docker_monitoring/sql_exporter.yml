@@ -1,0 +1,17 @@
+global:
+  scrape_interval: 10s  # How often to scrape the data (default: 10s)
+
+target:
+  - labels:
+      group: "my_sql_group"
+    target: "database:5432"
+    connection_string: "user=postgres password=example dbname=mlops_accidents sslmode=disable" # Replace with your database credentials
+
+# Define custom SQL queries
+metrics:
+  - name: "custom_metric_f1"
+    help: "This is a custom metric based on a SQL query"
+    type: gauge  # You can also use counter, histogram, etc.
+    value: "SELECT f1_score FROM mlops_accidents ORDER BY timestamp DESC LIMIT 1"
+    labels:
+      source: "your_source_label"

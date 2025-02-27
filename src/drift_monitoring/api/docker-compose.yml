@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  fastapi:
+    build:
+      context: .  # The build context will be the current directory
+      dockerfile: Dockerfile  # Use the Dockerfile you created
+    ports:
+      - "8000:8000"  # Expose the FastAPI app on port 8000
+    volumes:
+      - ./src:/app  # Mount your app's source code into the container
