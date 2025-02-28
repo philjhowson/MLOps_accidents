@@ -11,6 +11,10 @@ python3 src/data/split_dataset.py
 python3 src/models/train_random_forests.py
 python3 src/data/simulate_data.py
 
+dvc add data/preprocessed/training_data.csv metrics/RandomForests_scores.json best_random_forests.joblib
+git add data/preprocessed/training_data.csv.dvc metrics/RandomForests_scores.json.dvc best_random_forests.joblib.dvc
+git commit -m "track the created with dvc"
+
 docker build -f src/docker/Dockerfile.api -t api:latest .
 docker run -p 8888:8888 -d api
 
@@ -28,6 +32,10 @@ for year in 2022 2023; do
 
         echo "Training model for $year-$month"
         python -c "from src.models.train_random_forests import train_rfc; train_rfc()"
+
+        dvc add data/preprocessed/training_data.csv metrics/RandomForests_scores.json best_random_forests.joblib
+        git add data/preprocessed/training_data.csv.dvc metrics/RandomForests_scores.json.dvc best_random_forests.joblib.dvc
+        git commit -m "update the created with dvc for $year-$month"
     done
 done
 
